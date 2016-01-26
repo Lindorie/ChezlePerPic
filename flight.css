@@ -1,0 +1,71 @@
+
+#selection, .active, #calroot {
+    -moz-border-radius:4px;
+}
+
+#selection {
+    font-family:sans-serif;
+    background:#333 url(images/h80.png);
+    height:56px;
+    padding:12px 0 12px 30px;
+    color:#ddd;
+    font-size:11px;
+    width:520px;
+	position: relative;
+    margin:0 auto;
+    -moz-box-shadow:0 0 10px #666;
+    -webkit-box-shadow:0 0 10px #666;
+}
+
+#selection label {
+    float:left;
+    width:215px;
+    display:block;
+    padding:6px;
+    border:1px solid transparent;
+    margin-right:30px;
+}
+
+#selection .active {
+    background-color:#fff;
+    color:#333;
+    border:1px solid #ccc;
+    border-bottom:0;
+}
+
+#selection .active input {
+    color:#333;
+    text-shadow:none;
+}
+
+/* date input */
+#selection .date {
+    float:left;
+    display:block;
+    border:0;
+    background-color:#fff;
+    font-size:18px;
+    color:#000;
+/*     text-shadow:0 0 1px #000; */
+	margin: 3px 3px 3px 0;
+    width:180px;
+    cursor:pointer;
+	padding: 0;
+	
+}
+
+/* date input trigger element */
+#selection .caltrigger {
+    display:block;
+    width:30px;
+    height:32px;
+    float:left;
+    background:url(images/icon.jpg) no-repeat 0 0;
+    margin-top:-8px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+}
+
+#selection .active .caltrigger {
+    background-position: 0 -32px;
+}
