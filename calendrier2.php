@@ -9,7 +9,7 @@
 	$yearF = $yearActuel+1;
 	$month = date('n');
 	$monthActuel = date('n');
-	$events = $date -> getEvents($yearD,$yearF,$link);
+	$events = $date -> getEvents($yearD,$yearF);
 	$affich = 0;
 	if (!isset($moisP)) {$moisP = $month; }
 	if (!isset($moisN)) {$moisN = $month; }

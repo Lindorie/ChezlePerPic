@@ -40,7 +40,7 @@
 								<div class="input-prepend">
 									<span class="add-on"><i class="fa fa-user"></i></span>
 									<select name="maj_client" class="span2">
-									<?php $liste =  liste_clients($link);
+									<?php $liste =  liste_clients();
 											foreach($liste as $k => $c) { ?>
 												<option value="<?php echo $k; ?>"><?php echo $c['prenom'].' '.$c['nom']; ?></option>
 									<?		}

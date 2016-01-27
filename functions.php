@@ -25,7 +25,8 @@ function envoyer_email($destinataire, $objet, $message) {
 	}
 } 
 
-function liste_clients($link, $prefix, $id = NULL) {
+function liste_clients($id = NULL) {
+	global $link, $prefix;
 	$liste = array();
 	
 	if ($id != NULL) {

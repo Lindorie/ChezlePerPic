@@ -1,7 +1,14 @@
 <h1>Espace privé <?php echo $_SESSION['identifiant']; ?></h1>
 
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="active"><a href="#reservations" aria-controls="reservations" role="tab" data-toggle="tab">Réservations</a></li>
+	<li role="presentation"><a href="#clients" aria-controls="clients" role="tab" data-toggle="tab">Clients</a></li>
+</ul>
 
-<div class="info light tools">
+
+
+<div class="info light tools" style="display: none;">
     <p>Que voulez-vous faire ?</p>
     <ul class="a_menu">
         <li <?php if ($_GET['show'] == 'gerer_res') echo 'class="selected"'; ?>><a href="?page=prive&amp;show=gerer_res#liste_reservations">Gérer les réservations</a></li>
@@ -10,41 +17,38 @@
     </ul>
 </div>
 
-<?php
 
-	if ($_SESSION['permission'] == 'admin') {
+<!-- Tab panes -->
+<div class="tab-content">
+	<div role="tabpanel" class="tab-pane active" id="reservations">
+		<?php
 
-        $afficher = 4;
+		if ($_SESSION['permission'] == 'admin') {
 
-		if (isset($_GET['show'])) $show = $_GET['show'];
-		else $show = "";
-		$accueil = false;
+			$afficher = 4;
+			require "./calendrier.php";
+			include "a_gerer_res.php";
 
-		switch($show) {
-			case "gerer_res":
-                require "./calendrier.php";
-				include "a_gerer_res.php";
-				break;
-
-			case "gerer_cli":
-				include "a_gerer_cli.php";
-				break;
-
-			case "com_con":
-				include "a_com_con.php";
-				break;
-
-			default:
-			$accueil = true;
-			break;
 		}
 
-        if ($accueil == true) {
+		?>
 
-		 require "./calendrier.php";
+	</div>
+	<div role="tabpanel" class="tab-pane" id="clients">
+		<?php
 
-?>
-			<div id="consultants">
+		if ($_SESSION['permission'] == 'admin') {
+
+            include "a_gerer_cli.php";
+
+		}
+
+		?>
+
+	</div>
+</div>
+
+			<div id="consultants" style="display:none;">
 				<div class="table">
 					<div id="documents" class="bloc" style="display:none;">
 						<h3>Documents partagés</h3>
@@ -85,7 +89,3 @@
 					<p class="info">Cliquez sur les dates des réservations qui vous intéressent dans le calendrier ci-dessus pour voir le détail.</p>
 				</div>
 			</div>
-
-	<?php }  ?>
-
-	<?php }  ?>

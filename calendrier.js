@@ -7,11 +7,14 @@ $(window).load(function(){
 		var annee = parseInt(date[0]);
 		var anneeD = annee - 1;
 		var anneeP = annee + 1;
+
+		var moisT, moisD, moisA, moisDbis;
 			
-			if (mois == 1) { var moisT = 12; } else { var moisT = mois - 1; } // Numéro du dernier mois de l'affichage "avant" pour repère nextUntil
-			if (mois > 9) { var moisD = mois - 12 + 3; } else { var moisD = mois + 3; } // Numéro du 4ème et dernier mois affiché
-			if (mois == 9) { var moisA = 1; } else { var moisA = moisD + 1; } // Numéro du dernier mois de l'affichage "avant" : repère pour le nextUntil
-			if (mois >= 5 && mois <= 8) { var moisDbis = moisA - 12 + 4; } else  { var moisDbis = moisA + 4; } // Numéro du premier mois de l'affichage "après" x2 : repère pour le nextUntil
+			if (mois == 1) { moisT = 12; } else { moisT = mois - 1; } // Numéro du dernier mois de l'affichage "avant" pour repère nextUntil
+			if (mois > 9) { moisD = mois - 12 + 3; } else { moisD = mois + 3; } // Numéro du 4ème et dernier mois affiché
+			if (mois == 9) { moisA = 1; } else { moisA = moisD + 1; } // Numéro du dernier mois de l'affichage "avant" : repère pour le nextUntil
+			if (mois >= 5 && mois <= 8) { moisDbis = moisA - 12 + 4; } else  { moisDbis = moisA + 4; } // Numéro du premier mois de l'affichage "après" x2 : repère pour le nextUntil
+
 			//alert("mois = "+mois+" moisA = "+moisA+" moisD = "+moisD+" moisDbis = "+moisDbis);
 		
 		// Supprimer tous les mois vides
@@ -67,6 +70,7 @@ $(window).load(function(){
 		var test = 99;
 		var	moisDter = moisDbis;
 		var anneeX = anneeP;
+
 		// On cherche le dernier div qui existe avec une année et un mois
 		do {
 			if (test == 0) {
@@ -82,9 +86,11 @@ $(window).load(function(){
 		var length = $('#calendar #'+anneeX+'month'+moisD).nextUntil(target).length;
 		//alert('#calendar #'+anneeX+'month'+moisD);
 		//alert("length="+length);
-		// Si le nombre d'éléments (length) entre les 2 repères sont inférieurs à 4 alors on lance la fonction moisvide pour rajouter des mois
-		if (length < 4) { var vide = moisvide(annee,mois,length,"apres"); }
-		else var vide = false;
+
+		// Si le nombre d'éléments (length) entre les 2 repères est inférieur à 4 alors on lance la fonction moisvide pour rajouter des mois
+		var vide;
+		if (length < 4) { vide = moisvide(annee,mois,length,"apres"); }
+		else vide = false;
 		
 		if (vide != false) {
 			$('#calendar .vide').last().attr('id', anneeP+'month'+(moisDbis));
@@ -115,11 +121,13 @@ $(window).load(function(){
 		var annee = parseInt(date[0]);
 		var anneeD = annee - 1;
 		var anneeP = annee + 1;
+
+		var moisT, moisD, moisA, moisDbis;
 		
-			if (mois == 1) { var moisT = 12; } else { var moisT = mois - 1; } // Numéro du dernier mois de l'affichage "avant" pour repère nextUntil
-			if (mois <= 4) { var moisD = mois - 4 + 12; } else { var moisD = mois - 4; } // Numéro du 4ème et dernier mois affiché
-			if (mois <= 9) { var moisA = mois + 4 - 12; } else { var moisA = mois + 4; } // Numéro du premier mois de l'affichage "après" pour repère nextUntil
-			if (mois == 5) { var moisDbis = 12; } else  { var moisDbis = moisD - 1; } // Numéro du dernier mois de l'affichage "avant"x2 pour repère prevUntil
+		if (mois == 1) { moisT = 12; } else { moisT = mois - 1; } // Numéro du dernier mois de l'affichage "avant" pour repère nextUntil
+		if (mois <= 4) { moisD = mois - 4 + 12; } else { moisD = mois - 4; } // Numéro du 4ème et dernier mois affiché
+		if (mois <= 9) { moisA = mois + 4 - 12; } else { moisA = mois + 4; } // Numéro du premier mois de l'affichage "après" pour repère nextUntil
+		if (mois == 5) { moisDbis = 12; } else  { moisDbis = moisD - 1; } // Numéro du dernier mois de l'affichage "avant"x2 pour repère prevUntil
 			
 		// Rendre invisible tous les mois
 		$('#calendar .month').each( function() { 
@@ -135,6 +143,7 @@ $(window).load(function(){
 			var ladate = new Date();
 			var anneeActuelle = ladate.getFullYear();
 			if (annee == anneeActuelle) {
+
 				var length = $('#calendar #'+annee+'month'+mois).prevUntil('#calendar #'+anneeD+'month'+moisDbis).length - 1;
 				
 				if (length < 4) {
@@ -146,10 +155,26 @@ $(window).load(function(){
 					$('#calendar #fleche_avant').hide();
 				}
 			}
+
+			console.log(anneeD + ' ' + moisD); //2015 12
+
+			var actuel = $('#calendar .month.actuel').attr('id').split('month');
+			var moisActuel = parseInt(actuel[1]);
+			var anneeActuel = parseInt(actuel[0]);
+
+			if (anneeD < anneeActuel) {
+				$(this).parent().hide();
+				$(this).find("span").html(anneeActuel+'-'+moisActuel);
+				$('#calendar #fleche_apres a').find("span").html(anneeActuel+'-'+moisActuel);
+			} else {
+				$(this).parent().show();
+				$(this).find("span").html(anneeD+'-'+moisD);
+				$('#calendar #fleche_apres a').find("span").html(anneeD+'-'+moisD);
+			}
+
 			$('#calendar #'+annee+'month'+mois).prevUntil('#calendar #'+anneeD+'month'+moisDbis).removeClass('invisible').addClass('current').fadeIn();
-			$(this).find("span").html(anneeD+'-'+moisD);
-			$('#calendar #fleche_apres a').find("span").html(anneeD+'-'+moisD);
-		
+			flechePrev();
+
 		} else if (mois >= 6 && mois <= 8) {
 			// Afficher les 4 mois d'avant
 			$('#calendar #'+annee+'month'+mois).prevUntil('#calendar #'+annee+'month'+moisDbis).removeClass('invisible').addClass('current').fadeIn();
@@ -210,5 +235,21 @@ $(window).load(function(){
 		$(this).removeClass('couleur_attente');
 	});
 
+	function flechePrev() {
+		// Enlever la flèche "précédent" si le premier mois est le mois actuel
+		var dateNow = new Date();
+		var moisNow = dateNow.getMonth()+1;
+		var anneeNow = dateNow.getFullYear();
+		var fleche = $('#calendar #fleche_avant a').find("span").html();
+		var flecheArray = fleche.split('-');
+
+
+		if (flecheArray[0] == anneeNow && flecheArray[1] == moisNow) {
+			$('#calendar #fleche_avant').hide();
+		} else {
+			$('#calendar #fleche_avant').show();
+		}
+	}
+	flechePrev();
 });
 

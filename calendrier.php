@@ -4,13 +4,13 @@
 	$date = new Date();
 	$yearActuel = date('Y');
 	// Année de Départ
-	$yearD = $yearActuel-1;
+	$yearD = $yearActuel;
 	// Année de Fin
 	$yearF = $yearActuel+1;
 	$year = date('Y');
 	$month = date('n');
 	$monthActuel = date('n');
-	$events = $date -> getEvents($yearD,$yearF,$link,$prefix);
+	$events = $date -> getEvents($yearD,$yearF);
 	$dates = $date -> getAll($year);
 				$affich = 0;
 	if (!isset($moisP)) { $moisP = $month; }
