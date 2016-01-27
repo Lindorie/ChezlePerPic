@@ -4,7 +4,7 @@ $content_email = '
 <br />
 Vous venez de demander une réservation pour la location de l\'appartement <strong>«&nbsp;Chez le Pèr\'Pic&nbsp;»</strong>.<br /> Veuillez trouver ci-dessous le récapitulatif de votre demande :<br /><br />
 
-<strong>Identifiant client</strong>: '. $identifiant .'<br />
+<strong>Identifiant client</strong>: '. $identifiant_client .'<br />
 <strong>Nom, prénom</strong>: '. $client["nom"].' '.$client['prenom'] .'<br />
 <strong>Formule choisie</strong>: '.$formule.' <br />
 <strong>Date d\'arrivée</strong>: '. date("d/m/Y", strtotime($arrivee)) .'<br />
@@ -24,7 +24,7 @@ $content_email2 = '
 <br />
 Une nouvelle demande de réservation a été enregistrée sur le site.<br /> Veuillez trouver ci-dessous le récapitulatif de la demande :<br /><br />
 
-<strong>Identifiant client</strong>: '. $identifiant .'<br />
+<strong>Identifiant client</strong>: '. $identifiant_client .'<br />
 <strong>Nom, prénom</strong>: '. $client["nom"].' '.$client['prenom'] .'<br />
 <strong>Formule choisie</strong>: '.$formule.' <br />
 <strong>Date d\'arrivée</strong>: '. date("d/m/Y", strtotime($arrivee)) .'<br />

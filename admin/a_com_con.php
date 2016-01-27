@@ -5,7 +5,7 @@
 		
 		// ################### SUPPRIMER DOCUMENT #####################
 		
-		$rq = 'SELECT nom FROM '.prefix.'consultants_docs WHERE id = '.$_GET['id'];
+		$rq = 'SELECT nom FROM '.$prefix.'consultants_docs WHERE id = '.$_GET['id'];
 		$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
 		$d = mysqli_fetch_assoc($rs);
 		echo suppr_doc($_GET['id'],$d['nom']);
@@ -20,7 +20,7 @@
 		
 		// ################## LISTE DES DOCUMENTS #######################
 		
-		$rq = 'SELECT id, titre, nom, DATE_FORMAT(date, "%d/%m/%Y") as date FROM '.prefix.'consultants_docs ORDER BY date DESC';
+		$rq = 'SELECT id, titre, nom, DATE_FORMAT(date, "%d/%m/%Y") as date FROM '.$prefix.'consultants_docs ORDER BY date DESC';
 		$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
 		
 		$nb = mysqli_num_rows($rs);
@@ -83,10 +83,10 @@
 <?php 
 	if (isset($_GET['outils']) AND $_GET['outils'] == 'voirmsgenvoyes') {
 		// MESSAGES ENVOYES
-		$rq = 'SELECT titre, identifiant, consultants_msg.id, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM '.prefix.'consultants_msg, '.prefix.'user WHERE auteur = '.$_SESSION['id'].' AND parent = "" AND user.id = consultants_msg.auteur ORDER BY date ASC;';
+		$rq = 'SELECT titre, identifiant, consultants_msg.id, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM '.$prefix.'consultants_msg, '.$prefix.'user WHERE auteur = '.$_SESSION['id'].' AND parent = "" AND user.id = consultants_msg.auteur ORDER BY date ASC;';
 	} elseif (isset($_GET['outils']) AND $_GET['outils'] == 'voirmsg') {
 		// MESSAGES RECUS
-		$rq = 'SELECT titre, identifiant, consultants_msg.id, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM '.prefix.'consultants_msg, '.prefix.'user WHERE destinataire = '.$_SESSION['id'].' AND parent = "" AND user.id = consultants_msg.auteur ORDER BY date ASC;';
+		$rq = 'SELECT titre, identifiant, consultants_msg.id, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM '.$prefix.'consultants_msg, '.$prefix.'user WHERE destinataire = '.$_SESSION['id'].' AND parent = "" AND user.id = consultants_msg.auteur ORDER BY date ASC;';
 	}
 	$rs = mysqli_query($link,$rq) OR die (mysqli_error($link));
 	$nb = mysqli_num_rows($rs);
@@ -95,7 +95,7 @@
 		while ($m = mysqli_fetch_assoc($rs)) {
 			
 			// Réponses 
-			$req = 'SELECT COUNT(id) as nb_rep FROM '.prefix.'consultants_msg WHERE parent = '.$m['id'];
+			$req = 'SELECT COUNT(id) as nb_rep FROM '.$prefix.'consultants_msg WHERE parent = '.$m['id'];
 			$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 			$r = mysqli_fetch_assoc($res);
 	
@@ -130,7 +130,7 @@
 	<div class="alignRight"><a href="?page=prive&amp;show=com_con&amp;outils=envoimsg#messages" class="btn btn-info"><i class="fa fa-edit"></i> Nouveau message</a></div>
 <?php
 	// DETAIL D'UN MESSAGE
-	$rq_m = 'SELECT consultants_msg.id as id, auteur, titre, destinataire, message, identifiant, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM '.prefix.'consultants_msg, '.prefix.'user WHERE consultants_msg.id = '.$_GET['id'].' AND consultants_msg.auteur = user.id';
+	$rq_m = 'SELECT consultants_msg.id as id, auteur, titre, destinataire, message, identifiant, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM '.$prefix.'consultants_msg, '.$prefix.'user WHERE consultants_msg.id = '.$_GET['id'].' AND consultants_msg.auteur = user.id';
 	$rs_m = mysqli_query($link,$rq_m) OR die (mysqli_error($link));
 	
 ?>
@@ -139,7 +139,7 @@
 	
 	// Vérification et actualisation du statut de lecture
 	if (!$m['lecture'] AND $_SESSION['id'] == $m['destinataire']) {
-		$req = 'UPDATE '.prefix.'consultants_msg SET lecture = 1 WHERE id = '.$m['id'].'';
+		$req = 'UPDATE '.$prefix.'consultants_msg SET lecture = 1 WHERE id = '.$m['id'].'';
 		mysqli_query($link,$req) OR die(mysqli_error($link));
 		$m['lecture'] = 1;
 	}
@@ -253,7 +253,7 @@
 ?>
 <div class="form_modif">
 	<?php if (isset($_GET['parent'])) { 
-			$t = mysqli_query($link,'SELECT titre FROM '.prefix.'consultants_msg WHERE id = '.$_GET['parent']) OR die (mysqli_error($link));
+			$t = mysqli_query($link,'SELECT titre FROM '.$prefix.'consultants_msg WHERE id = '.$_GET['parent']) OR die (mysqli_error($link));
 			$ti = mysqli_fetch_assoc($t);
 			$titre = $ti['titre'];
 			echo '<h3>Répondre au message : '.$titre.'</h3>';

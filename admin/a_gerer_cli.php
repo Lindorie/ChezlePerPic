@@ -23,7 +23,7 @@
 				echo '<div class="info bad">Une erreur s\'est produite : '.mysqli_error($link).'<br />'.$rq.'</div>';
 			}
 		}
-		$clients = liste_clients($_GET['modifier']);
+		$clients = liste_clients($link,$_GET['modifier']);
 		$modifier = true;
 		
 	} else if (isset($_GET['ajouter'])) {
@@ -64,7 +64,7 @@
 				if ($erreur != "") { echo '<br />'.$erreur.' Mot de passe généré automatiquement : '.$mdp; }
 				if ($mdpvide) { echo '<br />Mot de passe généré automatiquement : '.$mdp; }
 				echo '</div>';
-				$clients = liste_clients();
+				$clients = liste_clients($link);
 				$liste = true;
 			} else {
 				echo '<div class="info bad">Une erreur s\'est produite : '.mysqli_error($link).'<br />'.$rq.'</div>';
@@ -73,9 +73,9 @@
 		} else { $ajouter = true; }
 		
 	} elseif (isset($_GET['reservations'])) {
-		$client = liste_clients($_GET['reservations']);
+		$client = liste_clients($link,$_GET['reservations']);
 		echo '<h3>'.$client[$_GET['reservations']]['prenom'].' '.$client[$_GET['reservations']]['nom'].'</h3>';
-		$rq = 'SELECT id, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_a, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM '.prefix.'reservation WHERE id_client = '.$_GET['reservations'];
+		$rq = 'SELECT id, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_a, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM '.$prefix.'reservation WHERE id_client = '.$_GET['reservations'];
 		$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
 		$nb = mysqli_num_rows($rs);
 		if ($nb == 0) { echo '<div class="info bad">Aucune réservation n\'est associée à ce client.</div>'; $clients = liste_clients(); $reservations = false;}
@@ -84,7 +84,7 @@
 		}
 	} elseif (isset($_GET['supprimer'])) {
 		echo supprimer('client',$_GET['supprimer']);
-		$clients = liste_clients();
+		$clients = liste_clients($link);
 		$suppr = true;
 	} elseif (isset($_GET['email'])) {
 		if (isset($_POST['submit_contact'])) {
@@ -96,13 +96,13 @@
 				$formulaire = false;
 			}
 		} else {
-			$client = liste_clients($_GET['email']);
+			$client = liste_clients($link,$_GET['email']);
 			$destinataire = $client[$_GET['email']]['email'];
 			$nom_client = $client[$_GET['email']]['prenom'].' '.$client[$_GET['email']]['nom'];
 			$formulaire = true;
 		}
 	} else {
-		$clients = liste_clients();
+		$clients = liste_clients($link);
 		$liste = true;
 	}
 	

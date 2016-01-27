@@ -7,7 +7,7 @@
 			</div>
 <? 		}
 	
-	$rq = 'SELECT * FROM '.prefix.'livre_dor ORDER BY id DESC';
+	$rq = 'SELECT * FROM '.$prefix.'livre_dor ORDER BY id DESC';
 	$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 	
 	while($content = mysqli_fetch_array($rs)) {

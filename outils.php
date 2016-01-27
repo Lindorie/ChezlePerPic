@@ -29,7 +29,7 @@
 					
 					if ($type == 'activites') {
 						// Traitement des catégories
-						$rq = 'SELECT * FROM '.prefix.'categorie';
+						$rq = 'SELECT * FROM '.$prefix.'categorie';
 						$rs = mysqli_query($link,$rq) OR die('Erreur cat : '.mysqli_error($link));
 						$nb = mysqli_num_rows($rs);
 						
@@ -105,7 +105,7 @@
 							
 							$nom_image = $nom.".".$extension_upload;
 							
-							$rq = 'UPDATE '.prefix.'activites SET titre="'.$titre.'", accroche="'.$accroche.'", texte="'.$texte.'", categorie="'.$cat.'", photo="'.$nom_image.'" WHERE id = "'.$id.'"';
+							$rq = 'UPDATE '.$prefix.'activites SET titre="'.$titre.'", accroche="'.$accroche.'", texte="'.$texte.'", categorie="'.$cat.'", photo="'.$nom_image.'" WHERE id = "'.$id.'"';
 						} else {
 							if ($_POST['sup_img'] == 'sup_img') {
 								unlink("images/activites/illu/".$_POST['img_act']);
@@ -113,16 +113,16 @@
 								$photo = "";
 							} else $photo = $_POST['img_act'];
 						
-							$rq = 'UPDATE '.prefix.'activites SET titre="'.$titre.'", accroche="'.$accroche.'", texte="'.$texte.'", categorie="'.$cat.'", photo="'.$photo.'" WHERE id = '.$id.'';
+							$rq = 'UPDATE '.$prefix.'activites SET titre="'.$titre.'", accroche="'.$accroche.'", texte="'.$texte.'", categorie="'.$cat.'", photo="'.$photo.'" WHERE id = '.$id.'';
 						}
 						
 						
 					} else if ($type == 'news') { 
-						$rq = 'UPDATE '.prefix.'news SET titre="'.$titre.'", accroche="'.$accroche.'", texte="'.$texte.'" WHERE id = '.$id.'';
+						$rq = 'UPDATE '.$prefix.'news SET titre="'.$titre.'", accroche="'.$accroche.'", texte="'.$texte.'" WHERE id = '.$id.'';
 					} else if ($type == 'livredor') { 
-						$rq = 'UPDATE '.prefix.'livre_dor SET auteur="'.$auteur.'", mois_loc="'.$mois_loc.'", texte="'.$texte.'" WHERE id = '.$id.'';
+						$rq = 'UPDATE '.$prefix.'livre_dor SET auteur="'.$auteur.'", mois_loc="'.$mois_loc.'", texte="'.$texte.'" WHERE id = '.$id.'';
 					} else {
-						$rq = 'UPDATE '.prefix.'content SET titre="'.$titre.'", texte="'.$texte.'" WHERE id = '.$id.'';
+						$rq = 'UPDATE '.$prefix.'content SET titre="'.$titre.'", texte="'.$texte.'" WHERE id = '.$id.'';
 					}
 					
 					$rs = mysqli_query($link,$rq);
@@ -131,7 +131,7 @@
 				} else {
 					// MODIFIER ACTIVITES
 					if($_REQUEST['page'] == 'activites') {
-						$rq = 'SELECT * FROM '.prefix.'activites WHERE id = '.$_REQUEST['id'].'';
+						$rq = 'SELECT * FROM '.$prefix.'activites WHERE id = '.$_REQUEST['id'].'';
 						$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link).'<br />'.$rq);
 						
 						while ($activites = mysqli_fetch_array($rs)) {
@@ -141,14 +141,14 @@
 							$cat = $activites['categorie'];
 							$nb_cat = count($cat);
 							if ($nb_cat > 0) {
-								$rq2 = 'SELECT id, libelle FROM '.prefix.'categorie WHERE id IN ('.$cat.');';
+								$rq2 = 'SELECT id, libelle FROM '.$prefix.'categorie WHERE id IN ('.$cat.');';
 								$rs2 = mysqli_query($link,$rq2) OR die('Erreur 2 : '.mysqli_error($link).'<br />'.$rq2);
 							// liste autres catégories
-							$rq3 = 'SELECT id, libelle FROM '.prefix.'categorie WHERE id NOT IN ('.$cat.');';
+							$rq3 = 'SELECT id, libelle FROM '.$prefix.'categorie WHERE id NOT IN ('.$cat.');';
 							$rs3 = mysqli_query($link,$rq3) OR die('Erreur 3 : '.mysqli_error($link));
 							} else {
 								
-								$rq3 = 'SELECT id, libelle FROM '.prefix.'categorie ';
+								$rq3 = 'SELECT id, libelle FROM '.$prefix.'categorie ';
 								$rs3 = mysqli_query($link,$rq3) OR die('Erreur 2b : '.mysqli_error($link).'<br />'.$rq3);
 							}
 							echo '<div class="form_modif">';
@@ -192,15 +192,15 @@
 					
 						// MODIFIER NEWS
 						if ($_REQUEST['type'] == 'news' OR $_REQUEST['page'] == 'news') { 
-							$rq = 'SELECT * FROM '.prefix.'news WHERE id = '.$_REQUEST['id'].'';
+							$rq = 'SELECT * FROM '.$prefix.'news WHERE id = '.$_REQUEST['id'].'';
 							$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 						} else if ($_REQUEST['type'] == 'livredor' OR $_REQUEST['page'] == 'livredor') {
 						// MODIFIER TELMOIGNAGES
-							$rq = 'SELECT * FROM '.prefix.'livre_dor WHERE id = '.$_REQUEST['id'].'';
+							$rq = 'SELECT * FROM '.$prefix.'livre_dor WHERE id = '.$_REQUEST['id'].'';
 							$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 						} else {
 						// MODIFIER AUTRES
-							$rq = 'SELECT * FROM '.prefix.'content WHERE id = '.$_REQUEST['id'].'';
+							$rq = 'SELECT * FROM '.$prefix.'content WHERE id = '.$_REQUEST['id'].'';
 							$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 						}
 						
@@ -254,7 +254,7 @@
 					$type = $_REQUEST['type'];
 					
 					// Traitement des catégories
-					$rq = 'SELECT * FROM '.prefix.'categorie';
+					$rq = 'SELECT * FROM '.$prefix.'categorie';
 					$rs = mysqli_query($link,$rq) OR die('Erreur cat : '.mysqli_error($link));
 					$nb = mysqli_num_rows($rs);
 					
@@ -352,7 +352,7 @@
 					if($_REQUEST['page'] == 'activites') { 
 						
 							// Traitement des catégories
-							$rq3 = 'SELECT id, libelle FROM '.prefix.'categorie';
+							$rq3 = 'SELECT id, libelle FROM '.$prefix.'categorie';
 							$rs3 = mysqli_query($link,$rq3) OR die('Erreur 3 : '.mysqli_error($link));
 							
 							echo '<div class="form_modif">';
@@ -419,11 +419,11 @@
 			case "supprimer":
 				if ($_REQUEST['confirm'] == 'oui') {
 					if($_REQUEST['type'] == 'news') {
-						mysqli_query($link,'DELETE FROM '.prefix.'news WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysqli_error($link));
+						mysqli_query($link,'DELETE FROM '.$prefix.'news WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysqli_error($link));
 					} else if ($_REQUEST['type'] == 'activites') {
 					
 					} else {
-						mysqli_query($link,'DELETE FROM '.prefix.'content WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysqli_error($link));
+						mysqli_query($link,'DELETE FROM '.$prefix.'content WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysqli_error($link));
 					}
 				} else {
 				

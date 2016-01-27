@@ -25,7 +25,7 @@
 		// Modification du titre
 		if (isset($_POST['submit_titre'])) {
 			$titre = htmlspecialchars($_POST['titre']);
-			$req = 'UPDATE '.prefix.'photos SET titre = "'.$titre.'" WHERE id = '.$_POST['id'];
+			$req = 'UPDATE '.$prefix.'photos SET titre = "'.$titre.'" WHERE id = '.$_POST['id'];
 			if(mysqli_query($link,$req)) {
 				echo '<div class="info good">La titre de la photo a bien été modifié : '.$titre.'.</div>';
 			} else {
@@ -34,7 +34,7 @@
 		} 
 		// Modification de l'ordre
 		else if(isset($_POST['submit_ordre_img'])) {
-				$req = 'UPDATE '.prefix.'photos SET ordre = "'.$_POST['ordre'].'" WHERE id = '.$_POST['id'];
+				$req = 'UPDATE '.$prefix.'photos SET ordre = "'.$_POST['ordre'].'" WHERE id = '.$_POST['id'];
 				if(mysqli_query($link,$req)) {
 					echo '<div class="info good">L\'ordre de la photo a bien été modifié : '.$_POST['ordre'].'.</div>';
 				} else {
@@ -43,7 +43,7 @@
 		}
 		// Déplacement de l'image
 		else if(isset($_POST['submit_gal_dep'])) {
-				$req = 'UPDATE '.prefix.'photos SET galerie = "'.$_POST['gal_dep'].'" WHERE id = '.$_POST['id'];
+				$req = 'UPDATE '.$prefix.'photos SET galerie = "'.$_POST['gal_dep'].'" WHERE id = '.$_POST['id'];
 				if(mysqli_query($link,$req)) {
 					echo '<div class="info good">La photo a été déplacée.</div>';
 				} else {
@@ -76,7 +76,7 @@
 							<p class="cent"><label for="galerie">Galerie</label>
 								<select name="galerie" id="galerie">
 									<?php 
-										$req = 'SELECT id, libelle, libelle_en FROM '.prefix.'galerie ORDER BY ordre ASC';
+										$req = 'SELECT id, libelle, libelle_en FROM '.$prefix.'galerie ORDER BY ordre ASC';
 										$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 										while ($gal = mysqli_fetch_array($res)) {
 											echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
@@ -106,7 +106,7 @@
 						<p class="cent"><label for="galerie">Galerie</label>
 							<select name="galerie" id="galerie">
 								<?php 
-									$req = 'SELECT id, libelle, libelle_en FROM '.prefix.'galerie ORDER BY ordre ASC';
+									$req = 'SELECT id, libelle, libelle_en FROM '.$prefix.'galerie ORDER BY ordre ASC';
 									$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 									while ($gal = mysqli_fetch_array($res)) {
 										echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
@@ -173,14 +173,14 @@
 					if(isset($_POST['submit_gal'])) {
 						$titre = htmlspecialchars($_POST['titre']);
 						$titre_en = htmlspecialchars($_POST['titre_en']);
-						$req = 'INSERT INTO '.prefix.'galerie VALUES ("", "'.$titre.'", "'.$titre_en.'", 0)';
+						$req = 'INSERT INTO '.$prefix.'galerie VALUES ("", "'.$titre.'", "'.$titre_en.'", 0)';
 						if(mysqli_query($link,$req)) { echo '<div class="info good">La galerie « '.$titre.' » a bien été ajoutée.</div>'; }
 						else echo '<div class="info bad">'.mysqli_error($link).'</div>';
 					}
 					else if(isset($_POST['submit_titre_gal'])) {
 							$titre = htmlspecialchars($_POST['titre']);
 							$titre_en = htmlspecialchars($_POST['titre_en']);
-							$req = 'UPDATE '.prefix.'galerie SET libelle = "'.$titre.'", libelle_en = "'.$titre_en.'" WHERE id = '.$_POST['id'];
+							$req = 'UPDATE '.$prefix.'galerie SET libelle = "'.$titre.'", libelle_en = "'.$titre_en.'" WHERE id = '.$_POST['id'];
 							if(mysqli_query($link,$req)) {
 								echo '<div class="info good">La titre de la galerie a bien été modifié : '.$titre.'.</div>';
 							} else {
@@ -188,7 +188,7 @@
 							}
 					}
 					else if(isset($_POST['submit_ordre_gal'])) {
-							$req = 'UPDATE '.prefix.'galerie SET ordre = "'.$_POST['ordre'].'" WHERE id = '.$_POST['id'];
+							$req = 'UPDATE '.$prefix.'galerie SET ordre = "'.$_POST['ordre'].'" WHERE id = '.$_POST['id'];
 							if(mysqli_query($link,$req)) {
 								echo '<div class="info good">L\'ordre de la galerie a bien été modifié : '.$_POST['ordre'].'.</div>';
 							} else {
@@ -196,7 +196,7 @@
 							}
 					}
 				
-					$req = 'SELECT id, libelle, libelle_en, ordre FROM '.prefix.'galerie ORDER BY ordre ASC';
+					$req = 'SELECT id, libelle, libelle_en, ordre FROM '.$prefix.'galerie ORDER BY ordre ASC';
 					$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 					
 					$nb = mysqli_num_rows($res);
@@ -215,7 +215,7 @@
 					<?php
 							while ($g = mysqli_fetch_array($res)) :
 							
-							$rq = 'SELECT COUNT(id) AS nb FROM '.prefix.'photos WHERE galerie = '.$g['id'];
+							$rq = 'SELECT COUNT(id) AS nb FROM '.$prefix.'photos WHERE galerie = '.$g['id'];
 							$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
 							$nb_ph = mysqli_fetch_array($rs);
 					?>
@@ -256,7 +256,7 @@
 				?>
 
 <?php else : 
-	$req = 'SELECT id, libelle, libelle_en FROM '.prefix.'galerie ORDER BY ordre ASC';
+	$req = 'SELECT id, libelle, libelle_en FROM '.$prefix.'galerie ORDER BY ordre ASC';
 	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
 	$nb = mysqli_num_rows($res);
@@ -268,7 +268,7 @@
 		echo '<div class="galerie">';
 		echo '<h2><span>'.$g['libelle'].'</span></h2>';
 	
-		$req2 = 'SELECT id, titre, nom, ordre FROM '.prefix.'photos WHERE galerie = '.$g['id'].' ORDER BY galerie ASC, ordre ASC';
+		$req2 = 'SELECT id, titre, nom, ordre FROM '.$prefix.'photos WHERE galerie = '.$g['id'].' ORDER BY galerie ASC, ordre ASC';
 		$res2 = mysqli_query($link,$req2) OR die(mysqli_error($link));
 		
 		$nb2 = mysqli_num_rows($res2);

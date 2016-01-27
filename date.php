@@ -5,8 +5,8 @@ class Date{
 	var $days = array("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
 	var $months = array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"); 
 	
-	function getEvents($yearD,$yearF) {
-		$req = 'SELECT id, date_a,date_d,etat FROM '.prefix.'reservation WHERE YEAR(date_a) BETWEEN '.$yearD.' AND '.$yearF;
+	function getEvents($yearD,$yearF,$link,$prefix) {
+		$req = 'SELECT id, date_a,date_d,etat FROM '.$prefix.'reservation WHERE YEAR(date_a) BETWEEN '.$yearD.' AND '.$yearF;
 		$res = mysqli_query($link,$req);
 		$r = array();
 		

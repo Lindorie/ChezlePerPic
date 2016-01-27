@@ -25,13 +25,13 @@ function envoyer_email($destinataire, $objet, $message) {
 	}
 } 
 
-function liste_clients($id = NULL) {
+function liste_clients($link, $prefix, $id = NULL) {
 	$liste = array();
 	
 	if ($id != NULL) {
-		$req = 'SELECT * FROM '.prefix.'client WHERE id = '.$id.' ORDER BY nom ASC, prenom ASC';
+		$req = 'SELECT * FROM '.$prefix.'client WHERE id = '.$id.' ORDER BY nom ASC, prenom ASC';
 	} else {
-		$req = 'SELECT * FROM '.prefix.'client ORDER BY nom ASC, prenom ASC';
+		$req = 'SELECT * FROM '.$prefix.'client ORDER BY nom ASC, prenom ASC';
 	}
 	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
@@ -92,7 +92,6 @@ function envoi_mail ( $objet, $message, $destinataires = "pic.carine@gmail.com, 
 
 function newChaine( $char = "") {
 	if( $char == "" ) $char = 8;
-	$chaine = ""; 
 	$list = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
 	mt_srand((double)microtime()*1000000);
 	$newstring="";
@@ -163,7 +162,7 @@ function unzip_file($file, $destination_temp, $galerie) {
 
 function supprimer ($table, $id) {
 	$erreur = "";
-	$req = 'DELETE FROM '.prefix.''.$table.' WHERE id = '.$id;
+	$req = 'DELETE FROM '.$prefix.''.$table.' WHERE id = '.$id;
 	if(mysqli_query($link,$req)) {
 		$succes = '<div class="info good">La suppression a bien été effectuée.</div>';
 	} else $erreur .= mysqli_error($link);
@@ -174,7 +173,7 @@ function supprimer ($table, $id) {
 }
 
 function suppr_doc($id,$nom) {
-	$req = 'DELETE FROM '.prefix.'consultants_docs WHERE id = '.$id;
+	$req = 'DELETE FROM '.$prefix.'consultants_docs WHERE id = '.$id;
 	if(mysqli_query($link,$req)) {
 		unlink("admin/documents/".$nom);
 		$succes = '<div class="info good">Le document a bien été supprimé.</div>';
@@ -186,7 +185,7 @@ function suppr_doc($id,$nom) {
 }
 
 function affich_photo($id) {
-	$req = 'SELECT id, titre, nom FROM '.prefix.'photos WHERE id = '.$id.';';
+	$req = 'SELECT id, titre, nom FROM '.$prefix.'photos WHERE id = '.$id.';';
 	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
 	$p = mysqli_fetch_array($res);
@@ -195,7 +194,7 @@ function affich_photo($id) {
 }
 
 function suppr_photo($id,$nom) {
-	$req = 'DELETE FROM '.prefix.'photos WHERE id = '.$id;
+	$req = 'DELETE FROM '.$prefix.'photos WHERE id = '.$id;
 	if(mysqli_query($link,$req)) {
 		unlink("photos/".$nom);
 		unlink("photos/mini/".$nom);

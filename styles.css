@@ -108,7 +108,6 @@ z-index: 99;
 position: relative;
 margin-left: 220px;
 padding: 0 15px;
-padding-top: 231px;
 z-index: 2;
 }
 
@@ -245,7 +244,7 @@ color: #fff;
 #img_top {
 width: 960px;
 text-align: right;
-position: fixed;
+position: relative;
 z-index: 50;
 top: 0;
 margin: 0 auto 0 -235px;

@@ -494,4 +494,4 @@
 		</div> <!-- body2 -->
 	</body>
 </html>
-<?php mysqli_close($connexion); ?>
+<?php mysqli_close($link); ?>

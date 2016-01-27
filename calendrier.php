@@ -4,17 +4,18 @@
 	$date = new Date();
 	$yearActuel = date('Y');
 	// Année de Départ
-	$yearD = $yearActuel;
+	$yearD = $yearActuel-1;
 	// Année de Fin
 	$yearF = $yearActuel+1;
 	$year = date('Y');
 	$month = date('n');
 	$monthActuel = date('n');
-	$events = $date -> getEvents($yearD,$yearF);
+	$events = $date -> getEvents($yearD,$yearF,$link,$prefix);
 	$dates = $date -> getAll($year);
 				$affich = 0;
 	if (!isset($moisP)) { $moisP = $month; }
 	if (!isset($moisN)) { $moisN = $month; }
+
 ?>
 <div id="calendar">
 		<?php $dates = current($dates); ?>						

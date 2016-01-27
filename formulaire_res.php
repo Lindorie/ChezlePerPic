@@ -9,26 +9,31 @@
 		// Gestion des erreurs
 		$erreur = "";
 		// Mot de passe / Compte client
-		if ($password == "") {
-			if ($password1 == "") { $erreur .= 'Vous devez remplir le champ <strong>Mot de passe</strong><br />'; }
-			if ($password2 == "") { $erreur .= 'Vous devez remplir le champ <strong>Confirmer le Mot de passe</strong><br />'; }
-			if ($password1 != $password2) { $erreur .= 'Les mots de passe ne sont pas identiques<br />'; }
-		} else $dejaclient = true;
-		if (!$dejaclient) {
-			// Coordonnées
-			if ($nom == "") { $erreur .= 'Vous devez remplir le champ <strong>Nom</strong><br />'; }
-			if ($prenom == "") { $erreur .= 'Vous devez remplir le champ <strong>Prénom</strong><br />'; }
-			if ($email == "") { $erreur .= 'Vous devez remplir le champ <strong>Email</strong><br />'; }
-			if ($tel == "") { $erreur .= 'Vous devez remplir le champ <strong>Téléphone</strong><br />'; }
-			if ($adresse == "") { $erreur .= 'Vous devez remplir le champ <strong>Adresse</strong><br />'; }
-			if ($cp == "") { $erreur .= 'Vous devez remplir le champ <strong>Code postal</strong><br />'; }
-			if ($ville == "") { $erreur .= 'Vous devez remplir le champ <strong>Ville</strong><br />'; }
-			if ($pays == "") { $erreur .= 'Vous devez remplir le champ <strong>Pays</strong><br />'; }
-			
-			if ($pref_mail == 'on') { $pref_mail2 = 'oui'; } else { $pref_mail2 = 'non'; }
-			if ($pref_tel == 'on') { $pref_tel2 = 'oui'; } else { $pref_tel2 = 'non'; }
-			if ($news == 'on') { $newsletter = 'oui'; } else { $newsletter = 'non'; }
+		if ($email_client == "admin") {
+			$id_client = 14;
+		} else {
+			if ($password == "") {
+				if ($password1 == "") { $erreur .= 'Vous devez remplir le champ <strong>Mot de passe</strong><br />'; }
+				if ($password2 == "") { $erreur .= 'Vous devez remplir le champ <strong>Confirmer le Mot de passe</strong><br />'; }
+				if ($password1 != $password2) { $erreur .= 'Les mots de passe ne sont pas identiques<br />'; }
+			} else $dejaclient = true;
+			if (!$dejaclient) {
+				// Coordonnées
+				if ($nom == "") { $erreur .= 'Vous devez remplir le champ <strong>Nom</strong><br />'; }
+				if ($prenom == "") { $erreur .= 'Vous devez remplir le champ <strong>Prénom</strong><br />'; }
+				if ($email == "") { $erreur .= 'Vous devez remplir le champ <strong>Email</strong><br />'; }
+				if ($tel == "") { $erreur .= 'Vous devez remplir le champ <strong>Téléphone</strong><br />'; }
+				if ($adresse == "") { $erreur .= 'Vous devez remplir le champ <strong>Adresse</strong><br />'; }
+				if ($cp == "") { $erreur .= 'Vous devez remplir le champ <strong>Code postal</strong><br />'; }
+				if ($ville == "") { $erreur .= 'Vous devez remplir le champ <strong>Ville</strong><br />'; }
+				if ($pays == "") { $erreur .= 'Vous devez remplir le champ <strong>Pays</strong><br />'; }
+
+				if ($pref_mail == 'on') { $pref_mail2 = 'oui'; } else { $pref_mail2 = 'non'; }
+				if ($pref_tel == 'on') { $pref_tel2 = 'oui'; } else { $pref_tel2 = 'non'; }
+				if ($news == 'on') { $newsletter = 'oui'; } else { $newsletter = 'non'; }
+			}
 		}
+
 		// Réservation 
 		if ($formule == "") { $erreur .= 'Vous devez choisir une formule<br />'; }
 		if ($arrivee == "") { $erreur .= 'Vous devez choisir une date d\'arrivée<br />'; }
@@ -46,51 +51,51 @@
 			$pays = htmlspecialchars($pays);
 			$formule = htmlspecialchars($formule);
 			$password1 = md5(sha1($password1));
-			
-		if (!$dejaclient) {
+
+			if (!$dejaclient) {
 				// On cherche d'abord si cette adresse email est déjà reliée à un compte client
-				$req = 'SELECT id FROM '.prefix.'client WHERE email = "'.$email.'"';
+				$req = 'SELECT id FROM '.$prefix.'client WHERE email = "'.$email.'"';
 				$res = mysqli_query($link,$req) OR die('<div class="info bad">1: '.mysqli_error($link).'</div>');
 				$nb = mysqli_num_rows($res);
-				if ($nb != 0) { 
-					echo '<div class="info bad">Nous avons trouvé un compte client relié à cette adresse email. Veuillez saisir le mot de passe correspondant à votre compte client ou modifier l\'adresse email.</div>'; 
+				if ($nb != 0) {
+					echo '<div class="info bad">Nous avons trouvé un compte client relié à cette adresse email. Veuillez saisir le mot de passe correspondant à votre compte client ou modifier l\'adresse email.</div>';
 					$succes = false;
-				} else { 
+				} else {
 					// Enregistrement du client dans la table client
 					$req = 'INSERT INTO '.$prefix.'client VALUES ("", "'.$nom.'", "'.$prenom.'", "'.$email.'", "'.$tel.'", "'.$tel2.'", "'.$adresse.'", "'.$cp.'", "'.$ville.'", "'.$pays.'", "'.$password1.'", "'.$pref_mail2.'", "'.$pref_tel2.'", "'.$newsletter.'")';
 					$res = mysqli_query($link,$req) OR die('<div class="info bad">2: '.mysqli_error($link).'</div>');
 					$id_client = mysqli_insert_id($link);
 					$succes = true;
 				}
-			} else {
+			} else if (isset($id_client) AND empty($id_client)) {
 				// Recherche de l'id du client déjà enregistré
 				$pass = md5(sha1($password));
-				$req = 'SELECT id, password FROM '.prefix.'client WHERE email = "'.$email_client.'"';
+				$req = 'SELECT id, password FROM '.$prefix.'client WHERE email = "'.$email_client.'"';
 				$res = mysqli_query($link,$req) OR die('<div class="info bad">3: '.mysqli_error($link).'</div>');
 				$nb = mysqli_num_rows($res);
 				if ($nb == 0) { echo '<div class="info bad">Nous n\'avons pas trouvé de compte client relié à cette adresse email. Veuillez vérifier le champ <strong>Email</strong>.</div>'; $succes = false;}
-				else { 
+				else {
 					$client = mysqli_fetch_array($res);
 					if ($client['password'] == $pass) {
 						$id_client = $client['id'];
 						$succes = true;
 					} else {
-						echo '<div class="info bad">Le mot de passe saisi ne correspond pas à l\'adresse email. Veuillez vérifier le champ <strong>Mot de passe</strong> de votre compte client.</div>'; 
+						echo '<div class="info bad">Le mot de passe saisi ne correspond pas à l\'adresse email. Veuillez vérifier le champ <strong>Mot de passe</strong> de votre compte client.</div>';
 						$succes = false;
 					}
 				}
 			}
 			if ($succes) {
 				// Enregistrement de la réservation dans la table réservation
-				$req2 = 'INSERT INTO '.$prefix.'reservation VALUES ("", '.$id_client.', "'.$formule.'", "'.$arrivee.'", "'.$depart.'", "'.$nombre.'", "'.$enfants.'", "'.$bebe.'", "'.$message.'", "", "", "rose", NOW())';
+				$req2 = 'INSERT INTO '.$prefix.'reservation VALUES (NULL, '.$id_client.', "'.$formule.'", "'.$arrivee.'", "'.$depart.'", "'.$nombre.'", "'.$enfants.'", "'.$bebe.'", "'.$message.'", "", "", "rose", NOW())';
 				$res2 = mysqli_query($link,$req2) OR die('<div class="info bad">4: '.mysqli_error($link).'</div>');
 				
 				// Envoi du mail récapitulatif au client 
 					/* Récupérer les informations client */
-					$req = 'SELECT * FROM '.prefix.'client WHERE id = '.$id_client.'';
+					$req = 'SELECT * FROM '.$prefix.'client WHERE id = '.$id_client.'';
 					$res = mysqli_query($link,$req) OR die('<div class="info bad">5: '.mysqli_error($link).'</div>');
 					$client = mysqli_fetch_array($res);
-					$identifiant = substr($client['nom'],0,1).substr($client['prenom'],0,1).$client['id'];
+					$identifiant_client = substr($client['nom'],0,1).substr($client['prenom'],0,1).$client['id'];
 					
 					/* Envoi du mail */
 					if (strtoupper(substr(PHP_OS,0,3)=='WIN')) {
@@ -150,7 +155,7 @@
 
 					# SEND THE EMAIL
 					ini_set(sendmail_from,'contact@chezleperpic.fr');  // the INI lines are to force the From Address to be used !
-					  if ($_SERVER['SERVER_NAME'] != 'localhost') { mail($emailaddress, $emailsubject, $msg, $headers); }
+					  if ($_SERVER['SERVER_NAME'] != 'localhost' OR !$dev) { mail($emailaddress, $emailsubject, $msg, $headers); }
 					ini_restore(sendmail_from); 
 					
 					
@@ -181,7 +186,7 @@
 
 					# SEND THE EMAIL
 					ini_set(sendmail_from,'contact@chezleperpic.fr');  // the INI lines are to force the From Address to be used !
-					  if ($_SERVER['SERVER_NAME'] != 'localhost') { mail($emailaddress, $emailsubject, $msg, $headers); }
+					  if ($_SERVER['SERVER_NAME'] != 'localhost' OR !$dev) { mail($emailaddress, $emailsubject, $msg, $headers); }
 					ini_restore(sendmail_from); 
 				
 				echo '<div class="info good">Votre réservation a été enregistrée, nous vous contacterons sous peu pour la validation et le paiement.</div>';
@@ -196,25 +201,33 @@
 <p style="margin-bottom: 20px;font-style: italic">Tous les champs marqués * sont obligatoires.</p>
 
 <form method="post" action="#" id="reservation">
+	<?php
+	if ($_SESSION['permission'] == 'admin') {
+		?>
+		<p>Vous êtes connecté en tant qu'administrateur. Le client sera PIC'S FAMILY (mireille.pic@gmail.com)</p>
+		<input type="hidden" value="admin" name="email_client" />
+		<?php
+	} else {
+	?>
 	<fieldset>
 		<legend>Si vous êtes déjà client</legend>
-		<p class="info">Saisissez vos identifiants :</p>
-		<div class="line-2">
-			<div class="wrap-elem">
-				<label for="email_client">Email *</label>
-				<div class="input-prepend">
-					<span class="add-on"><i class="fa fa-envelope"></i></span>
-					<input class="span3" type="text" placeholder="Email *" name="email_client" id="email_client" value="<?=$email_client;?>">
+			<p class="info">Saisissez vos identifiants :</p>
+			<div class="line-2">
+				<div class="wrap-elem">
+					<label for="email_client">Email *</label>
+					<div class="input-prepend">
+						<span class="add-on"><i class="fa fa-envelope"></i></span>
+						<input class="span3" type="text" placeholder="Email *" name="email_client" id="email_client" value="<?=$email_client;?>">
+					</div>
+				</div>
+				<div class="wrap-elem">
+					<label for="password">Mot de passe *</label>
+					<div class="input-prepend">
+						<span class="add-on"><i class="fa fa-key"></i></span>
+						<input class="span3" type="password" name="password" id="password" placeholder="Mot de passe *">
+					</div>
 				</div>
 			</div>
-			<div class="wrap-elem">
-				<label for="password">Mot de passe *</label>
-				<div class="input-prepend">
-					<span class="add-on"><i class="fa fa-key"></i></span>
-					<input class="span3" type="password" name="password" id="password" placeholder="Mot de passe *">
-				</div>
-			</div>
-		</div>
 	</fieldset>
 	<fieldset>
 		<legend>Si vous n'êtes pas client</legend>
@@ -316,6 +329,9 @@
 			</div>
 		</div>
 	</fieldset>
+		<?php
+	}
+	?>
 	<fieldset>
 		<legend>Votre réservation</legend>
 		<p class="info">Retrouvez toutes les formules disponibles sur la page <a href="?page=formules">Formules et Tarifs</a></p>
@@ -347,14 +363,14 @@
 				<label for="arrivee">Arrivée le *</label>
 				<div class="input-prepend">
 					<span class="add-on"><i class="fa fa-calendar"></i></span>
-					<input class="span3" type="date" name="arrivee" id="arrivee" value="<?php if (isset($arrivee)) echo $arrivee; else echo $curDate;?>" readonly="readonly" />
+					<input class="span3 datepicker" type="date" name="arrivee" id="arrivee" value="<?php if (isset($arrivee)) echo $arrivee; else echo $curDate;?>" readonly="readonly" />
 				</div>
 			</div>
 			<div class="wrap-elem">
 				<label for="depart">Départ le *</label>
 				<div class="input-prepend">
 					<span class="add-on"><i class="fa fa-calendar"></i></span>
-					<input class="span3" type="date" name="depart" id="depart" data-value="7" value="<?php if (isset($depart)) echo $depart; else echo $curDate2;?>" readonly="readonly" />
+					<input class="span3 datepicker" type="date" name="depart" id="depart" data-value="7" value="<?php if (isset($depart)) echo $depart; else echo $curDate2;?>" readonly="readonly" />
 				</div>
 			</div>
 		</div>
@@ -386,12 +402,23 @@
 				<label for="message">Message complémentaire</label>
 				<div class="input-prepend">
 					<span class="add-on"><i class="fa fa-comment"></i></span>
-					<textarea class="span4" rows="5" cols="40" name="message" id="message"><?=$message;?></textarea>
+					<textarea class="span6" rows="5" cols="70" name="message" id="message"><?=$message;?></textarea>
 				</div>
 			</div>
 		</div>
-		<p class="cent"><input type="checkbox" name="cgv" id="cgv" value="cgv" <?php if (isset($cgv)) echo 'checked="checked"'; ?> /><label for="cgv">J'ai lu et j'accepte les <a target="_blank" href="documents/convention_conditions.pdf">Conditions Générales de Location</a> *</label></p>
+		<p class="cent"><input type="checkbox" name="cgv" id="cgv" value="cgv" <?php if (isset($cgv) OR $_SESSION['permission'] == 'admin') echo 'checked="checked"'; ?> /><label for="cgv">J'ai lu et j'accepte les <a target="_blank" href="documents/convention_conditions.pdf">Conditions Générales de Location</a> *</label></p>
 	</fieldset>
 	<p class="alignCenter"><button type="submit" class="btn btn-success" name="reservation"><i class="fa fa-ok icon-large"></i> Réserver</button></p>
 </form>
 <?php } ?>
+
+<script>
+	$( document ).ready(function() {
+
+		$.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+		$( ".datepicker" ).datepicker({
+			minDate: 0
+		});
+
+	});
+</script>
