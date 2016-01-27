@@ -25,7 +25,7 @@
 					<div id="documents" class="bloc">
 						<h3>Documents partagés</h3>
 						<?php 
-							$rq = 'SELECT COUNT(id) as nb FROM consultants_docs';
+							$rq = 'SELECT COUNT(id) as nb FROM '.prefix.'consultants_docs';
 							$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
 							$count = mysqli_fetch_assoc($rs);
 						?>
@@ -39,7 +39,7 @@
 					<div id="messages" class="bloc">
 						<h3>Messagerie</h3>
 						<?php 
-							$rq = 'SELECT COUNT(id) as nb FROM consultants_msg WHERE lecture = 0 AND destinataire = '.$_SESSION['id'].'';
+							$rq = 'SELECT COUNT(id) as nb FROM '.prefix.'consultants_msg WHERE lecture = 0 AND destinataire = '.$_SESSION['id'].'';
 							$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
 							$count = mysqli_fetch_assoc($rs);
 						?>
@@ -53,7 +53,7 @@
 				<div id="reservations" class="bloc large">
 					<h3>Réservations</h3>
 					<?php 
-						$rq = 'SELECT COUNT(id) as nb FROM reservation WHERE date_a >= CURDATE()';
+						$rq = 'SELECT COUNT(id) as nb FROM '.prefix.'reservation WHERE date_a >= CURDATE()';
 						$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
 						$count = mysqli_fetch_assoc($rs);
 					?>

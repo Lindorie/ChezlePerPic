@@ -1,7 +1,7 @@
 
 <?php
 
-	$rq = 'SELECT id, titre, texte FROM content WHERE page = "reservation" ORDER BY ordre';
+	$rq = 'SELECT id, titre, texte FROM '.prefix.'content WHERE page = "reservation" ORDER BY ordre';
 	$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 	
 	while($content = mysqli_fetch_array($rs)) {

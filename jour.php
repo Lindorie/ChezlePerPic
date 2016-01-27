@@ -5,7 +5,7 @@ include "inc-connexion.php";
 $jour = str_replace("#", "", $_GET['jour']);
 
 
-$requete = 'SELECT id, etat FROM reservation WHERE "'.$jour.'" BETWEEN date_a AND date_d';
+$requete = 'SELECT id, etat FROM '.prefix.'reservation WHERE "'.$jour.'" BETWEEN date_a AND date_d';
 $resultat = mysqli_query($link,$requete) or die (mysqli_error($link));
 
 $nb = mysqli_num_rows($resultat);

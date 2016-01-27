@@ -7,12 +7,12 @@
 <? 		}
 
 	if ($_GET['id'] != '') {
-		$rq = 'SELECT id, titre, texte, accroche, photo FROM news WHERE id = '.$_GET["id"].' ORDER BY id DESC';
+		$rq = 'SELECT id, titre, texte, accroche, photo FROM '.prefix.'news WHERE id = '.$_GET["id"].' ORDER BY id DESC';
 		$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 		
 	} else {
 
-		$rq = 'SELECT id, titre, texte, accroche, photo FROM news ORDER BY id DESC';
+		$rq = 'SELECT id, titre, texte, accroche, photo FROM '.prefix.'news ORDER BY id DESC';
 		$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 	}
 	
@@ -28,7 +28,7 @@
 		<div class="detail">
 			<?
 			if($content['categorie'] != "") { 
-				$rq2 = 'SELECT libelle FROM categorie WHERE id IN ('.$content['categorie'].') ORDER BY libelle';
+				$rq2 = 'SELECT libelle FROM '.prefix.'categorie WHERE id IN ('.$content['categorie'].') ORDER BY libelle';
 				$rs2 = mysqli_query($link,$rq2) OR die('Erreur : '.mysqli_error($link));
 				$categories = array();
 				while ($cat = mysqli_fetch_array($rs2)) {

@@ -1,7 +1,7 @@
 <?php
 	if (isset($_POST['submit_deplacer'])) {
 		foreach($_POST['action'] as $chkbx){
-			$req = 'UPDATE photos SET galerie = '.$_POST['deplacer'].' WHERE id = "'.$chkbx.'"';
+			$req = 'UPDATE '.$prefix.'photos SET galerie = '.$_POST['deplacer'].' WHERE id = "'.$chkbx.'"';
 			mysqli_query($link,$req) OR die(mysqli_error($link));
 		}
 		echo '<div class="info light good">Les photos ont été déplacées.</div>';
@@ -9,7 +9,7 @@
 	else if (isset($_POST['submit_ordre'])) {
 		$i = 0;
 		foreach($_POST['action'] as $chkbx){
-			$req = 'UPDATE photos SET ordre = '.$_POST['ordre'][$i].' WHERE id = "'.$chkbx.'"';
+			$req = 'UPDATE '.$prefix.'photos SET ordre = '.$_POST['ordre'][$i].' WHERE id = "'.$chkbx.'"';
 			mysqli_query($link,$req) OR die(mysqli_error($link).' '.$req.' '.print_r($_POST['ordre']));
 			$i++;
 		}
@@ -19,7 +19,7 @@
 		$i = 0;
 		foreach($_POST['action'] as $chkbx){
 			$titre = htmlspecialchars($_POST['titre'][$i]);
-			$req = 'UPDATE photos SET titre = "'.$titre.'" WHERE id = "'.$chkbx.'"';
+			$req = 'UPDATE '.$prefix.'photos SET titre = "'.$titre.'" WHERE id = "'.$chkbx.'"';
 			mysqli_query($link,$req) OR die(mysqli_error($link).' '.$req.' '.print_r($_POST['titre']));
 			$i++;
 		}
@@ -27,19 +27,19 @@
 	}
 	else if (isset($_POST['submit_supprimer'])) {
 		foreach($_POST['action'] as $chkbx){
-			$rq = 'SELECT nom FROM photos WHERE id = '.$chkbx.'';
+			$rq = 'SELECT nom FROM '.prefix.'photos WHERE id = '.$chkbx.'';
 			$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
 			$n = mysqli_fetch_array($rs);
 			$nomphoto = $n['nom'];
 			unlink("photos/".$nomphoto);
 			unlink("photos/mini/".$nomphoto);
-			$req = 'DELETE FROM photos WHERE id = "'.$chkbx.'"';
+			$req = 'DELETE FROM '.prefix.'photos WHERE id = "'.$chkbx.'"';
 			mysqli_query($link,$req) OR die(mysqli_error($link));
 		}
 		echo '<div class="info light good">Les photos ont été supprimées.</div>';
 	}
 
-	$req = 'SELECT id, libelle, libelle_en FROM galerie ORDER BY ordre ASC';
+	$req = 'SELECT id, libelle, libelle_en FROM '.prefix.'galerie ORDER BY ordre ASC';
 	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
 	$nb = mysqli_num_rows($res);
@@ -51,7 +51,7 @@
 		echo '<div class="galerie">';
 		echo '<h3><span>'.$g['libelle'].'</span></h3>';
 	
-		$req2 = 'SELECT id, titre, nom, ordre FROM photos WHERE galerie = '.$g['id'].' ORDER BY galerie ASC, ordre ASC';
+		$req2 = 'SELECT id, titre, nom, ordre FROM '.prefix.'photos WHERE galerie = '.$g['id'].' ORDER BY galerie ASC, ordre ASC';
 		$res2 = mysqli_query($link,$req2) OR die(mysqli_error($link));
 		
 		$nb2 = mysqli_num_rows($res2);
@@ -105,7 +105,7 @@
 		<input type="submit" value="Déplacer vers :" name="submit_deplacer" />&nbsp;
 		<select name="deplacer" id="deplacer<?php echo $gal['id'];?>">
 			<?php 
-				$req_dep = 'SELECT id, libelle, libelle_en FROM galerie WHERE id != '.$g['id'].' ORDER BY ordre ASC';
+				$req_dep = 'SELECT id, libelle, libelle_en FROM '.prefix.'galerie WHERE id != '.$g['id'].' ORDER BY ordre ASC';
 				$res_dep = mysqli_query($link,$req_dep) OR die(mysqli_error($link));
 				while ($gal = mysqli_fetch_array($res_dep)) {
 					echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
@@ -170,7 +170,7 @@
 							<p>
 								<select name="gal_dep" id="gal_dep<?php echo $p['id']; ?>">
 								<?php 
-									$req_dep = 'SELECT id, libelle, libelle_en FROM galerie WHERE id != '.$g['id'].' ORDER BY ordre ASC';
+									$req_dep = 'SELECT id, libelle, libelle_en FROM '.prefix.'galerie WHERE id != '.$g['id'].' ORDER BY ordre ASC';
 									$res_dep = mysqli_query($link,$req_dep) OR die(mysqli_error($link));
 									while ($gal = mysqli_fetch_array($res_dep)) {
 										echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';

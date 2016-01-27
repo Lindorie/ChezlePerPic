@@ -2,7 +2,7 @@
 	<div id="intro">
 		<?php
 
-		$rq = 'SELECT id, titre, texte FROM content WHERE page = "accueil" ORDER BY ordre';
+		$rq = 'SELECT id, titre, texte FROM '.prefix.'content WHERE page = "accueil" ORDER BY ordre';
 		$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 		
 		while($content = mysqli_fetch_array($rs)) {
@@ -19,7 +19,7 @@
 		?>
 		<div class="galerie">
 		<?php // PHOTOS
-			$req2 = 'SELECT id, titre, nom FROM photos WHERE id IN(24,29,22,16) ORDER BY id ASC';
+			$req2 = 'SELECT id, titre, nom FROM '.prefix.'photos WHERE id IN(24,29,22,16) ORDER BY id ASC';
 			$res2 = mysqli_query($link,$req2) OR die(mysqli_error($link));
 			
 			$nb2 = mysqli_num_rows($res2);
@@ -45,7 +45,7 @@
 			<div id="slidesContainer">
 			<?php
 
-				$rq = 'SELECT id, titre, texte, accroche, photo, categorie FROM activites ORDER BY RAND() LIMIT 0,10';
+				$rq = 'SELECT id, titre, texte, accroche, photo, categorie FROM '.prefix.'activites ORDER BY RAND() LIMIT 0,10';
 				$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 				
 				while($content = mysqli_fetch_array($rs)) {
@@ -53,7 +53,7 @@
 					echo '<div class="slide_int">';
 					if($content['titre'] != "") { echo "<h3>".tronque($content['titre'],20)."</h3>"; }
 					if($content['categorie'] != "") { 
-						$rq2 = 'SELECT libelle FROM categorie WHERE id IN ('.$content['categorie'].') ORDER BY libelle';
+						$rq2 = 'SELECT libelle FROM '.prefix.'categorie WHERE id IN ('.$content['categorie'].') ORDER BY libelle';
 						$rs2 = mysqli_query($link,$rq2) OR die('Erreur : '.mysqli_error($link));
 						$categories = array();
 						while ($cat = mysqli_fetch_array($rs2)) {
@@ -86,7 +86,7 @@
 		<div id="news">
 			<h2><img src="images/titreactu.png" alt="News du mois" /></h2>
 			<?php
-				$rq = 'SELECT id, accroche, titre, DATE_FORMAT(date, "%d/%m/%Y") as date2 FROM news ORDER BY date DESC LIMIT 0,2';
+				$rq = 'SELECT id, accroche, titre, DATE_FORMAT(date, "%d/%m/%Y") as date2 FROM '.prefix.'news ORDER BY date DESC LIMIT 0,2';
 				$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 				
 				while($content = mysqli_fetch_array($rs)) {

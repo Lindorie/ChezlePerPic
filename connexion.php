@@ -4,10 +4,10 @@
 		if($_POST['identifiant'] != "" AND $_POST['password'] != "") {
 			
 			if($_POST['identifiant'] == 'admin' OR $_POST['identifiant'] == 'consultant') {
-				$rq = 'SELECT id, identifiant, password, role FROM user WHERE identifiant = "'.$_POST['identifiant'].'"';
+				$rq = 'SELECT id, identifiant, password, role FROM '.prefix.'user WHERE identifiant = "'.$_POST['identifiant'].'"';
 				$permission = NULL;
 			} else {
-				$rq = 'SELECT * FROM client WHERE email = "'.$_POST['identifiant'].'"';			
+				$rq = 'SELECT * FROM '.prefix.'client WHERE email = "'.$_POST['identifiant'].'"';
 				$permission = 'client';
 			}
 			

@@ -15,7 +15,7 @@
 			$code_postal = htmlspecialchars($code_postal);
 			$pays = htmlspecialchars($pays);
 			
-			$rq = 'UPDATE client SET nom = "'.$nom.'", prenom = "'.$prenom.'", email = "'.$email.'", tel = "'.$tel.'", tel2 = "'.$tel2.'", adresse = "'.$adresse.'", ville = "'.$ville.'", code_postal = "'.$code_postal.'", pays = "'.$pays.'"  WHERE id = '.$id_client.';';
+			$rq = 'UPDATE '.$prefix.'client SET nom = "'.$nom.'", prenom = "'.$prenom.'", email = "'.$email.'", tel = "'.$tel.'", tel2 = "'.$tel2.'", adresse = "'.$adresse.'", ville = "'.$ville.'", code_postal = "'.$code_postal.'", pays = "'.$pays.'"  WHERE id = '.$id_client.';';
 			
 			if (mysqli_query($link,$rq)) {
 				echo '<div class="info good">Les informations du client ont été modifiées.</div>';
@@ -57,7 +57,7 @@
 				$password = md5(sha1($mdp));   
 			}
 			
-			$rq = 'INSERT INTO client (nom, prenom, email, tel, tel2, adresse, ville, code_postal, pays, password) VALUES ("'.$nom.'", "'.$prenom.'", "'.$email.'", "'.$tel.'", "'.$tel2.'", "'.$adresse.'", "'.$ville.'", "'.$code_postal.'", "'.$pays.'", "'.$password.'");'; 
+			$rq = 'INSERT INTO '.$prefix.'client (nom, prenom, email, tel, tel2, adresse, ville, code_postal, pays, password) VALUES ("'.$nom.'", "'.$prenom.'", "'.$email.'", "'.$tel.'", "'.$tel2.'", "'.$adresse.'", "'.$ville.'", "'.$code_postal.'", "'.$pays.'", "'.$password.'");';
 			
 			if (mysqli_query($link,$rq)) {
 				echo '<div class="info good">Le client a bien été ajouté.';
@@ -75,7 +75,7 @@
 	} elseif (isset($_GET['reservations'])) {
 		$client = liste_clients($_GET['reservations']);
 		echo '<h3>'.$client[$_GET['reservations']]['prenom'].' '.$client[$_GET['reservations']]['nom'].'</h3>';
-		$rq = 'SELECT id, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_a, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM reservation WHERE id_client = '.$_GET['reservations'];
+		$rq = 'SELECT id, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_a, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM '.prefix.'reservation WHERE id_client = '.$_GET['reservations'];
 		$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
 		$nb = mysqli_num_rows($rs);
 		if ($nb == 0) { echo '<div class="info bad">Aucune réservation n\'est associée à ce client.</div>'; $clients = liste_clients(); $reservations = false;}

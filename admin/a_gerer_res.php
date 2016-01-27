@@ -3,17 +3,17 @@
 	if (isset($_GET['voir'])) {
 		
 		if (isset($_POST['submit_maj_etat'])) {
-			$rq = 'UPDATE reservation SET etat = "'.$_POST['maj_etat'].'" WHERE id = '.$_POST['id_reserv'].';';
+			$rq = 'UPDATE '.$prefix.'reservation SET etat = "'.$_POST['maj_etat'].'" WHERE id = '.$_POST['id_reserv'].';';
 			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 		}
 		
 		if (isset($_POST['submit_maj_client'])) {
-			$rq = 'UPDATE reservation SET id_client = "'.$_POST['maj_client'].'" WHERE id = '.$_POST['id_reserv'].';';
+			$rq = 'UPDATE '.$prefix.'reservation SET id_client = "'.$_POST['maj_client'].'" WHERE id = '.$_POST['id_reserv'].';';
 			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 		}
 
 		echo '<h2><span>Détail de la réservation</span></h2>';
-		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, email, tel, pref_mail, pref_tel, formule, type_paiement, prix, date, DATE_FORMAT(date_a, "%a %d %M %Y") as date_a, DATE_FORMAT(date_d, "%a %d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM reservation, client WHERE id_client = client.id AND reservation.id = '.$_GET['voir'].'';
+		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, email, tel, pref_mail, pref_tel, formule, type_paiement, prix, date, DATE_FORMAT(date_a, "%a %d %M %Y") as date_a, DATE_FORMAT(date_d, "%a %d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM '.prefix.'reservation, '.prefix.'client WHERE id_client = client.id AND reservation.id = '.$_GET['voir'].'';
 		$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 		
 		echo '<div id="detail_reservation">';
@@ -131,12 +131,12 @@
 			$tp_dd = mktime(0,0,0,$dd[1],$dd[0],$dd[2]);
 			$date_d = date("Y-m-d",$tp_dd);
 			
-			$rq = 'UPDATE reservation SET formule = "'.$_POST['formule'].'", type_paiement = "'.$_POST['type_paie'].'", date_a = "'.$date_a.'", date_d = "'.$date_d.'", nb_total = "'.$nb.'", enfants = "'.$nb_enf.'", bebes = "'.$nb_bb.'", prix = "'.$tarif.'"  WHERE id = '.$_GET['modifier'].';';
+			$rq = 'UPDATE '.$prefix.'reservation SET formule = "'.$_POST['formule'].'", type_paiement = "'.$_POST['type_paie'].'", date_a = "'.$date_a.'", date_d = "'.$date_d.'", nb_total = "'.$nb.'", enfants = "'.$nb_enf.'", bebes = "'.$nb_bb.'", prix = "'.$tarif.'"  WHERE id = '.$_GET['modifier'].';';
 			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 		}
 
 		echo '<h2><span>Modifier la réservation</span></h2>';
-		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, email, tel, pref_mail, pref_tel, formule, type_paiement, prix, date, DATE_FORMAT(date_a, "%d/%m/%Y") as date_a, DATE_FORMAT(date_d, "%d/%m/%Y") as date_d, nb_total, enfants, bebes, message, etat FROM reservation, client WHERE id_client = client.id AND reservation.id = '.$_GET['modifier'].'';
+		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, email, tel, pref_mail, pref_tel, formule, type_paiement, prix, date, DATE_FORMAT(date_a, "%d/%m/%Y") as date_a, DATE_FORMAT(date_d, "%d/%m/%Y") as date_d, nb_total, enfants, bebes, message, etat FROM '.prefix.'reservation, '.prefix.'client WHERE id_client = client.id AND reservation.id = '.$_GET['modifier'].'';
 		$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 		
 		echo '<div id="detail_reservation">';
@@ -197,7 +197,7 @@
 	} elseif (isset($_GET['supprimer'])) {
 	
 		if (isset($_POST['submit_supprimer'])) {
-			$rq = 'DELETE FROM reservation WHERE id = '.$_GET['supprimer'].';';
+			$rq = 'DELETE FROM '.prefix.'reservation WHERE id = '.$_GET['supprimer'].';';
 			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 			else echo '<div class="info good">La réservation a été supprimée.</div>';
 		} else {
@@ -219,7 +219,7 @@
 		
 		echo '<h2><span>Liste des réservations futures</span></h2>';
 
-		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_arrivee, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, etat FROM reservation, client WHERE id_client = client.id AND date_d >= CURDATE() ORDER BY date_a ASC;';
+		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_arrivee, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, etat FROM '.prefix.'reservation, '.prefix.'client WHERE id_client = client.id AND date_d >= CURDATE() ORDER BY date_a ASC;';
 		$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 		
 		$nb = mysqli_num_rows($res);

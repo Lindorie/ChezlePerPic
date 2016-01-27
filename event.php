@@ -5,7 +5,7 @@ include "inc-connexion.php";
 
 //if (!isset($_GET['date'])) $_GET['date'] = "2010-10-22";
 
-$requete = 'SELECT id_evenement, titre, type, LEFT(code_postal,2) as code_postal, ville, type FROM calendrier WHERE date = "'.$_GET['date'].'"';
+$requete = 'SELECT id_evenement, titre, type, LEFT(code_postal,2) as code_postal, ville, type FROM '.prefix.'calendrier WHERE date = "'.$_GET['date'].'"';
 $resultat = mysqli_query($link,$requete) or die (mysqli_error($link));
 
 $nb = mysqli_num_rows($resultat);

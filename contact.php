@@ -30,7 +30,7 @@ Mr et Mme PIC Gérard<br />
 			$objet = htmlspecialchars($objet);
 			$message = htmlspecialchars($message);
 			
-			$req = 'INSERT INTO contact VALUES ("", "'.$nom.'", "'.$email.'", "'.$objet.'", "'.$message.'", NOW())';
+			$req = 'INSERT INTO '.$prefix.'contact VALUES ("", "'.$nom.'", "'.$email.'", "'.$objet.'", "'.$message.'", NOW())';
 			if (mysqli_query($link,$req)) {
 				if ($_SERVER['HTTP_HOST'] != "localhost") {
 						$sujet = "Chezleperpic.fr : nouveau message";

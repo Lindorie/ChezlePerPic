@@ -49,7 +49,7 @@
 			
 		if (!$dejaclient) {
 				// On cherche d'abord si cette adresse email est déjà reliée à un compte client
-				$req = 'SELECT id FROM client WHERE email = "'.$email.'"';
+				$req = 'SELECT id FROM '.prefix.'client WHERE email = "'.$email.'"';
 				$res = mysqli_query($link,$req) OR die('<div class="info bad">1: '.mysqli_error($link).'</div>');
 				$nb = mysqli_num_rows($res);
 				if ($nb != 0) { 
@@ -57,7 +57,7 @@
 					$succes = false;
 				} else { 
 					// Enregistrement du client dans la table client
-					$req = 'INSERT INTO client VALUES ("", "'.$nom.'", "'.$prenom.'", "'.$email.'", "'.$tel.'", "'.$tel2.'", "'.$adresse.'", "'.$cp.'", "'.$ville.'", "'.$pays.'", "'.$password1.'", "'.$pref_mail2.'", "'.$pref_tel2.'", "'.$newsletter.'")';
+					$req = 'INSERT INTO '.$prefix.'client VALUES ("", "'.$nom.'", "'.$prenom.'", "'.$email.'", "'.$tel.'", "'.$tel2.'", "'.$adresse.'", "'.$cp.'", "'.$ville.'", "'.$pays.'", "'.$password1.'", "'.$pref_mail2.'", "'.$pref_tel2.'", "'.$newsletter.'")';
 					$res = mysqli_query($link,$req) OR die('<div class="info bad">2: '.mysqli_error($link).'</div>');
 					$id_client = mysqli_insert_id($link);
 					$succes = true;
@@ -65,7 +65,7 @@
 			} else {
 				// Recherche de l'id du client déjà enregistré
 				$pass = md5(sha1($password));
-				$req = 'SELECT id, password FROM client WHERE email = "'.$email_client.'"';
+				$req = 'SELECT id, password FROM '.prefix.'client WHERE email = "'.$email_client.'"';
 				$res = mysqli_query($link,$req) OR die('<div class="info bad">3: '.mysqli_error($link).'</div>');
 				$nb = mysqli_num_rows($res);
 				if ($nb == 0) { echo '<div class="info bad">Nous n\'avons pas trouvé de compte client relié à cette adresse email. Veuillez vérifier le champ <strong>Email</strong>.</div>'; $succes = false;}
@@ -82,12 +82,12 @@
 			}
 			if ($succes) {
 				// Enregistrement de la réservation dans la table réservation
-				$req2 = 'INSERT INTO reservation VALUES ("", '.$id_client.', "'.$formule.'", "'.$arrivee.'", "'.$depart.'", "'.$nombre.'", "'.$enfants.'", "'.$bebe.'", "'.$message.'", "", "", "rose", NOW())';
+				$req2 = 'INSERT INTO '.$prefix.'reservation VALUES ("", '.$id_client.', "'.$formule.'", "'.$arrivee.'", "'.$depart.'", "'.$nombre.'", "'.$enfants.'", "'.$bebe.'", "'.$message.'", "", "", "rose", NOW())';
 				$res2 = mysqli_query($link,$req2) OR die('<div class="info bad">4: '.mysqli_error($link).'</div>');
 				
 				// Envoi du mail récapitulatif au client 
 					/* Récupérer les informations client */
-					$req = 'SELECT * FROM client WHERE id = '.$id_client.'';
+					$req = 'SELECT * FROM '.prefix.'client WHERE id = '.$id_client.'';
 					$res = mysqli_query($link,$req) OR die('<div class="info bad">5: '.mysqli_error($link).'</div>');
 					$client = mysqli_fetch_array($res);
 					$identifiant = substr($client['nom'],0,1).substr($client['prenom'],0,1).$client['id'];
