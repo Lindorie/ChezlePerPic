@@ -14,9 +14,9 @@
 	
 		$rq = 'SELECT id, titre, texte, accroche, photo, categorie FROM activites ORDER BY id DESC';
 	}
-	$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+	$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 	
-	while($content = mysql_fetch_array($rs)) { ?>
+	while($content = mysqli_fetch_array($rs)) { ?>
 		<div class="activite liste" id="id<?=$content['id'];?>">
 		
 		<? if($content['titre'] != "") { ?> 
@@ -29,9 +29,9 @@
 			<?
 			if($content['categorie'] != "") { 
 				$rq2 = 'SELECT libelle FROM categorie WHERE id IN ('.$content['categorie'].') ORDER BY libelle';
-				$rs2 = mysql_query($rq2) OR die('Erreur : '.mysql_error());
+				$rs2 = mysqli_query($link,$rq2) OR die('Erreur : '.mysqli_error($link));
 				$categories = array();
-				while ($cat = mysql_fetch_array($rs2)) {
+				while ($cat = mysqli_fetch_array($rs2)) {
 					$categories[] = $cat['libelle'];
 				}
 				$nb_cat = count($categories);

@@ -33,12 +33,12 @@ function liste_clients($id = NULL) {
 	} else {
 		$req = 'SELECT * FROM client ORDER BY nom ASC, prenom ASC';
 	}
-	$res = mysql_query($req) OR die(mysql_error());
+	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
-	$nb = mysql_num_rows($res);
+	$nb = mysqli_num_rows($res);
 	if ($nb == 0) { $liste['erreur'] = 'Aucun client.'; }
 	else {
-		while ($c = mysql_fetch_array($res)) {
+		while ($c = mysqli_fetch_array($res)) {
 			$liste[$c['id']]['nom'] = $c['nom'];
 			$liste[$c['id']]['prenom'] = $c['prenom'];
 			$liste[$c['id']]['email'] = $c['email'];
@@ -144,8 +144,8 @@ function unzip_file($file, $destination_temp, $galerie) {
 				
 				$nom = $ajout;
 				$req = 'INSERT INTO photos VALUES ("", "", "'.$nom.'", "'.$galerie.'", 0)';
-				if(mysql_query($req)) { $succes .= '<li>La photo '.$fichier.' a bien été ajoutée.</li>'; }
-				else $erreur .= mysql_error();
+				if(mysqli_query($link,$req)) { $succes .= '<li>La photo '.$fichier.' a bien été ajoutée.</li>'; }
+				else $erreur .= mysqli_error($link);
 			}
 		$total++;
 		}
@@ -164,9 +164,9 @@ function unzip_file($file, $destination_temp, $galerie) {
 function supprimer ($table, $id) {
 	$erreur = "";
 	$req = 'DELETE FROM '.$table.' WHERE id = '.$id;
-	if(mysql_query($req)) {
+	if(mysqli_query($link,$req)) {
 		$succes = '<div class="info good">La suppression a bien été effectuée.</div>';
-	} else $erreur .= mysql_error();
+	} else $erreur .= mysqli_error($link);
 	if ($erreur != "") {
 			return $err = '<div class="info bad">'.$erreur.'<br />'.$req.'</div>';
 		}
@@ -175,10 +175,10 @@ function supprimer ($table, $id) {
 
 function suppr_doc($id,$nom) {
 	$req = 'DELETE FROM consultants_docs WHERE id = '.$id;
-	if(mysql_query($req)) {
+	if(mysqli_query($link,$req)) {
 		unlink("admin/documents/".$nom);
 		$succes = '<div class="info good">Le document a bien été supprimé.</div>';
-	} else $erreur .= mysql_error();
+	} else $erreur .= mysqli_error($link);
 	if ($erreur != "") {
 			return $err = '<div class="info bad">'.$erreur.'<br />'.$req.'</div>';
 		}
@@ -187,16 +187,16 @@ function suppr_doc($id,$nom) {
 
 function affich_photo($id) {
 	$req = 'SELECT id, titre, nom FROM photos WHERE id = '.$id.';';
-	$res = mysql_query($req) OR die(mysql_error());
+	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
-	$p = mysql_fetch_array($res);
+	$p = mysqli_fetch_array($res);
 	$re = '<div class="info photo"><img src="photos/mini/'.$p['nom'].'" alt="'.$p['titre'].'" /><p>'.$p['titre'].'</p></div>';
 	return $re;
 }
 
 function suppr_photo($id,$nom) {
 	$req = 'DELETE FROM photos WHERE id = '.$id;
-	if(mysql_query($req)) {
+	if(mysqli_query($link,$req)) {
 		unlink("photos/".$nom);
 		unlink("photos/mini/".$nom);
 		$succes = '<div class="info good">La photo a bien été supprimée.</div>';

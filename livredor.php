@@ -8,9 +8,9 @@
 <? 		}
 	
 	$rq = 'SELECT * FROM livre_dor ORDER BY id DESC';
-	$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+	$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 	
-	while($content = mysql_fetch_array($rs)) { 
+	while($content = mysqli_fetch_array($rs)) {
 ?>
 		<div class="livredor liste" id="id<?=$content['id'];?>">
 		

@@ -9,9 +9,9 @@
 
 
 		$rq = 'SELECT id, titre, texte FROM content WHERE page = "formules" ORDER BY ordre';
-		$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+		$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 		
-		while($content = mysql_fetch_array($rs)) {
+		while($content = mysqli_fetch_array($rs)) {
 			echo '<div class="content">';
 			if($content['titre'] != "") { echo "<h2><span>".$content['titre']."</span></h2>"; }
 			if($content['texte'] != "") { echo "<p>".htmlspecialchars_decode($content['texte'])."</p>"; }

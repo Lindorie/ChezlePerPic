@@ -26,8 +26,8 @@
 						<h3>Documents partagés</h3>
 						<?php 
 							$rq = 'SELECT COUNT(id) as nb FROM consultants_docs';
-							$rs = mysql_query($rq) OR die (mysql_error().'<br />'.$rq);
-							$count = mysql_fetch_assoc($rs);
+							$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
+							$count = mysqli_fetch_assoc($rs);
 						?>
 						<p><?php echo $count['nb']; ?> document(s) partagés.</p>
 						<ul>
@@ -40,8 +40,8 @@
 						<h3>Messagerie</h3>
 						<?php 
 							$rq = 'SELECT COUNT(id) as nb FROM consultants_msg WHERE lecture = 0 AND destinataire = '.$_SESSION['id'].'';
-							$rs = mysql_query($rq) OR die (mysql_error().'<br />'.$rq);
-							$count = mysql_fetch_assoc($rs);
+							$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
+							$count = mysqli_fetch_assoc($rs);
 						?>
 						<p><?php echo $count['nb']; ?> message(s) non lu(s).</p>
 						<ul>
@@ -54,8 +54,8 @@
 					<h3>Réservations</h3>
 					<?php 
 						$rq = 'SELECT COUNT(id) as nb FROM reservation WHERE date_a >= CURDATE()';
-						$rs = mysql_query($rq) OR die (mysql_error().'<br />'.$rq);
-						$count = mysql_fetch_assoc($rs);
+						$rs = mysqli_query($link,$rq) OR die (mysqli_error($link).'<br />'.$rq);
+						$count = mysqli_fetch_assoc($rs);
 					?>
 					<p><?php echo $count['nb']; ?> réservations futures.</p>
 					<p class="info">Cliquez sur les dates des réservations qui vous intéressent dans le calendrier ci-dessus pour voir le détail.</p>

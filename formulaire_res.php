@@ -50,27 +50,27 @@
 		if (!$dejaclient) {
 				// On cherche d'abord si cette adresse email est déjà reliée à un compte client
 				$req = 'SELECT id FROM client WHERE email = "'.$email.'"';
-				$res = mysql_query($req) OR die('<div class="info bad">1: '.mysql_error().'</div>');
-				$nb = mysql_num_rows($res);
+				$res = mysqli_query($link,$req) OR die('<div class="info bad">1: '.mysqli_error($link).'</div>');
+				$nb = mysqli_num_rows($res);
 				if ($nb != 0) { 
 					echo '<div class="info bad">Nous avons trouvé un compte client relié à cette adresse email. Veuillez saisir le mot de passe correspondant à votre compte client ou modifier l\'adresse email.</div>'; 
 					$succes = false;
 				} else { 
 					// Enregistrement du client dans la table client
 					$req = 'INSERT INTO client VALUES ("", "'.$nom.'", "'.$prenom.'", "'.$email.'", "'.$tel.'", "'.$tel2.'", "'.$adresse.'", "'.$cp.'", "'.$ville.'", "'.$pays.'", "'.$password1.'", "'.$pref_mail2.'", "'.$pref_tel2.'", "'.$newsletter.'")';
-					$res = mysql_query($req) OR die('<div class="info bad">2: '.mysql_error().'</div>');
-					$id_client = mysql_insert_id();
+					$res = mysqli_query($link,$req) OR die('<div class="info bad">2: '.mysqli_error($link).'</div>');
+					$id_client = mysqli_insert_id($link);
 					$succes = true;
 				}
 			} else {
 				// Recherche de l'id du client déjà enregistré
 				$pass = md5(sha1($password));
 				$req = 'SELECT id, password FROM client WHERE email = "'.$email_client.'"';
-				$res = mysql_query($req) OR die('<div class="info bad">3: '.mysql_error().'</div>');
-				$nb = mysql_num_rows($res);
+				$res = mysqli_query($link,$req) OR die('<div class="info bad">3: '.mysqli_error($link).'</div>');
+				$nb = mysqli_num_rows($res);
 				if ($nb == 0) { echo '<div class="info bad">Nous n\'avons pas trouvé de compte client relié à cette adresse email. Veuillez vérifier le champ <strong>Email</strong>.</div>'; $succes = false;}
 				else { 
-					$client = mysql_fetch_array($res);
+					$client = mysqli_fetch_array($res);
 					if ($client['password'] == $pass) {
 						$id_client = $client['id'];
 						$succes = true;
@@ -83,13 +83,13 @@
 			if ($succes) {
 				// Enregistrement de la réservation dans la table réservation
 				$req2 = 'INSERT INTO reservation VALUES ("", '.$id_client.', "'.$formule.'", "'.$arrivee.'", "'.$depart.'", "'.$nombre.'", "'.$enfants.'", "'.$bebe.'", "'.$message.'", "", "", "rose", NOW())';
-				$res2 = mysql_query($req2) OR die('<div class="info bad">4: '.mysql_error().'</div>');
+				$res2 = mysqli_query($link,$req2) OR die('<div class="info bad">4: '.mysqli_error($link).'</div>');
 				
 				// Envoi du mail récapitulatif au client 
 					/* Récupérer les informations client */
 					$req = 'SELECT * FROM client WHERE id = '.$id_client.'';
-					$res = mysql_query($req) OR die('<div class="info bad">5: '.mysql_error().'</div>');
-					$client = mysql_fetch_array($res);
+					$res = mysqli_query($link,$req) OR die('<div class="info bad">5: '.mysqli_error($link).'</div>');
+					$client = mysqli_fetch_array($res);
 					$identifiant = substr($client['nom'],0,1).substr($client['prenom'],0,1).$client['id'];
 					
 					/* Envoi du mail */

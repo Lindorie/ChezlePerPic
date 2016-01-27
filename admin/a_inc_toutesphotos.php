@@ -2,7 +2,7 @@
 	if (isset($_POST['submit_deplacer'])) {
 		foreach($_POST['action'] as $chkbx){
 			$req = 'UPDATE photos SET galerie = '.$_POST['deplacer'].' WHERE id = "'.$chkbx.'"';
-			mysql_query($req) OR die(mysql_error());
+			mysqli_query($link,$req) OR die(mysqli_error($link));
 		}
 		echo '<div class="info light good">Les photos ont été déplacées.</div>';
 	}
@@ -10,7 +10,7 @@
 		$i = 0;
 		foreach($_POST['action'] as $chkbx){
 			$req = 'UPDATE photos SET ordre = '.$_POST['ordre'][$i].' WHERE id = "'.$chkbx.'"';
-			mysql_query($req) OR die(mysql_error().' '.$req.' '.print_r($_POST['ordre']));
+			mysqli_query($link,$req) OR die(mysqli_error($link).' '.$req.' '.print_r($_POST['ordre']));
 			$i++;
 		}
 		echo '<div class="info light good">Les photos ont été réordonnées.</div>';
@@ -20,7 +20,7 @@
 		foreach($_POST['action'] as $chkbx){
 			$titre = htmlspecialchars($_POST['titre'][$i]);
 			$req = 'UPDATE photos SET titre = "'.$titre.'" WHERE id = "'.$chkbx.'"';
-			mysql_query($req) OR die(mysql_error().' '.$req.' '.print_r($_POST['titre']));
+			mysqli_query($link,$req) OR die(mysqli_error($link).' '.$req.' '.print_r($_POST['titre']));
 			$i++;
 		}
 		echo '<div class="info light good">Le titre des photos a été modifié.</div>';
@@ -28,33 +28,33 @@
 	else if (isset($_POST['submit_supprimer'])) {
 		foreach($_POST['action'] as $chkbx){
 			$rq = 'SELECT nom FROM photos WHERE id = '.$chkbx.'';
-			$rs = mysql_query($rq) OR die(mysql_error());
-			$n = mysql_fetch_array($rs);
+			$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
+			$n = mysqli_fetch_array($rs);
 			$nomphoto = $n['nom'];
 			unlink("photos/".$nomphoto);
 			unlink("photos/mini/".$nomphoto);
 			$req = 'DELETE FROM photos WHERE id = "'.$chkbx.'"';
-			mysql_query($req) OR die(mysql_error());
+			mysqli_query($link,$req) OR die(mysqli_error($link));
 		}
 		echo '<div class="info light good">Les photos ont été supprimées.</div>';
 	}
 
 	$req = 'SELECT id, libelle, libelle_en FROM galerie ORDER BY ordre ASC';
-	$res = mysql_query($req) OR die(mysql_error());
+	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
-	$nb = mysql_num_rows($res);
+	$nb = mysqli_num_rows($res);
 	if ($nb == 0) { echo '<p>Aucune galerie.</p>'; }
 	else {
 		
-		while ($g = mysql_fetch_array($res)) :
+		while ($g = mysqli_fetch_array($res)) :
 		
 		echo '<div class="galerie">';
 		echo '<h3><span>'.$g['libelle'].'</span></h3>';
 	
 		$req2 = 'SELECT id, titre, nom, ordre FROM photos WHERE galerie = '.$g['id'].' ORDER BY galerie ASC, ordre ASC';
-		$res2 = mysql_query($req2) OR die(mysql_error());
+		$res2 = mysqli_query($link,$req2) OR die(mysqli_error($link));
 		
-		$nb2 = mysql_num_rows($res2);
+		$nb2 = mysqli_num_rows($res2);
 		if ($nb2 == 0) { echo '<p>Aucune photo dans cette galerie.</p>'; }
 		else {
 			if($outils == 'masse') {
@@ -71,7 +71,7 @@
 		</thead>
 		<tbody>
 <?php
-		while ($p = mysql_fetch_array($res2)) :
+		while ($p = mysqli_fetch_array($res2)) :
 ?>
 		<tr>
 			<td class="image">
@@ -106,8 +106,8 @@
 		<select name="deplacer" id="deplacer<?php echo $gal['id'];?>">
 			<?php 
 				$req_dep = 'SELECT id, libelle, libelle_en FROM galerie WHERE id != '.$g['id'].' ORDER BY ordre ASC';
-				$res_dep = mysql_query($req_dep) OR die(mysql_error());
-				while ($gal = mysql_fetch_array($res_dep)) {
+				$res_dep = mysqli_query($link,$req_dep) OR die(mysqli_error($link));
+				while ($gal = mysqli_fetch_array($res_dep)) {
 					echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
 				}
 			?>
@@ -133,7 +133,7 @@
 		</thead>
 		<tbody>
 <?php
-		while ($p = mysql_fetch_array($res2)) :
+		while ($p = mysqli_fetch_array($res2)) :
 ?>
 		<tr>
 			<td class="image">
@@ -171,8 +171,8 @@
 								<select name="gal_dep" id="gal_dep<?php echo $p['id']; ?>">
 								<?php 
 									$req_dep = 'SELECT id, libelle, libelle_en FROM galerie WHERE id != '.$g['id'].' ORDER BY ordre ASC';
-									$res_dep = mysql_query($req_dep) OR die(mysql_error());
-									while ($gal = mysql_fetch_array($res_dep)) {
+									$res_dep = mysqli_query($link,$req_dep) OR die(mysqli_error($link));
+									while ($gal = mysqli_fetch_array($res_dep)) {
 										echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
 									}
 								?>

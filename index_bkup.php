@@ -21,9 +21,9 @@
 	require_once ("inc-connexion.php");
 	include_once ("titre-description.php");
 	
-	mysql_query("SET NAMES UTF8"); 
+	mysqli_query($link,"SET NAMES UTF8");
 	
-	mysql_query("SET lc_time_names = 'fr_FR'");
+	mysqli_query($link,"SET lc_time_names = 'fr_FR'");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -380,4 +380,4 @@
 		</div>
 	</body>
 </html>
-<?php mysql_close($connexion); ?>
+<?php mysqli_close($connexion); ?>

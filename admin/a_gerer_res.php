@@ -4,24 +4,24 @@
 		
 		if (isset($_POST['submit_maj_etat'])) {
 			$rq = 'UPDATE reservation SET etat = "'.$_POST['maj_etat'].'" WHERE id = '.$_POST['id_reserv'].';';
-			if(!mysql_query($rq)) { echo '<div class="info light bad">'.mysql_error().'<br />'.$rq.'</div>'; }
+			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 		}
 		
 		if (isset($_POST['submit_maj_client'])) {
 			$rq = 'UPDATE reservation SET id_client = "'.$_POST['maj_client'].'" WHERE id = '.$_POST['id_reserv'].';';
-			if(!mysql_query($rq)) { echo '<div class="info light bad">'.mysql_error().'<br />'.$rq.'</div>'; }
+			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 		}
 
 		echo '<h2><span>Détail de la réservation</span></h2>';
 		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, email, tel, pref_mail, pref_tel, formule, type_paiement, prix, date, DATE_FORMAT(date_a, "%a %d %M %Y") as date_a, DATE_FORMAT(date_d, "%a %d %M %Y") as date_d, nb_total, enfants, bebes, message, etat FROM reservation, client WHERE id_client = client.id AND reservation.id = '.$_GET['voir'].'';
-		$res = mysql_query($req) OR die(mysql_error());
+		$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 		
 		echo '<div id="detail_reservation">';
-		$nb = mysql_num_rows($res);
+		$nb = mysqli_num_rows($res);
 		if ($nb == 0) {
 			echo '<p>Erreur : aucune réservation n\'a été trouvée.</p>';
 		} else {
-			while ($r = mysql_fetch_array($res)) { ?>
+			while ($r = mysqli_fetch_array($res)) { ?>
 				<p class="num_reserv"><i class="fa fa-book"></i> Réservation n°<?php echo $r['id_res']; ?></p>
 				<div class="client">
 					<p class="alignRight" style="float: right">
@@ -132,19 +132,19 @@
 			$date_d = date("Y-m-d",$tp_dd);
 			
 			$rq = 'UPDATE reservation SET formule = "'.$_POST['formule'].'", type_paiement = "'.$_POST['type_paie'].'", date_a = "'.$date_a.'", date_d = "'.$date_d.'", nb_total = "'.$nb.'", enfants = "'.$nb_enf.'", bebes = "'.$nb_bb.'", prix = "'.$tarif.'"  WHERE id = '.$_GET['modifier'].';';
-			if(!mysql_query($rq)) { echo '<div class="info light bad">'.mysql_error().'<br />'.$rq.'</div>'; }
+			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 		}
 
 		echo '<h2><span>Modifier la réservation</span></h2>';
 		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, email, tel, pref_mail, pref_tel, formule, type_paiement, prix, date, DATE_FORMAT(date_a, "%d/%m/%Y") as date_a, DATE_FORMAT(date_d, "%d/%m/%Y") as date_d, nb_total, enfants, bebes, message, etat FROM reservation, client WHERE id_client = client.id AND reservation.id = '.$_GET['modifier'].'';
-		$res = mysql_query($req) OR die(mysql_error());
+		$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 		
 		echo '<div id="detail_reservation">';
-		$nb = mysql_num_rows($res);
+		$nb = mysqli_num_rows($res);
 		if ($nb == 0) {
 			echo '<p>Erreur : aucune réservation n\'a été trouvée.</p>';
 		} else {
-			while ($r = mysql_fetch_array($res)) { ?>
+			while ($r = mysqli_fetch_array($res)) { ?>
 				<p class="num_reserv"><i class="fa fa-book"></i> Réservation n°<?php echo $r['id_res']; ?></p>
 				<form method="post" action="" id="form_modif_reserv">
 					<div class="client">
@@ -198,7 +198,7 @@
 	
 		if (isset($_POST['submit_supprimer'])) {
 			$rq = 'DELETE FROM reservation WHERE id = '.$_GET['supprimer'].';';
-			if(!mysql_query($rq)) { echo '<div class="info light bad">'.mysql_error().'<br />'.$rq.'</div>'; }
+			if(!mysqli_query($link,$rq)) { echo '<div class="info light bad">'.mysqli_error($link).'<br />'.$rq.'</div>'; }
 			else echo '<div class="info good">La réservation a été supprimée.</div>';
 		} else {
 			
@@ -220,9 +220,9 @@
 		echo '<h2><span>Liste des réservations futures</span></h2>';
 
 		$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_arrivee, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, etat FROM reservation, client WHERE id_client = client.id AND date_d >= CURDATE() ORDER BY date_a ASC;';
-		$res = mysql_query($req) OR die(mysql_error());
+		$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 		
-		$nb = mysql_num_rows($res);
+		$nb = mysqli_num_rows($res);
 		if ($nb == 0) {
 			echo '<p>Aucune réservation future.</p>';
 		} else { ?>
@@ -242,7 +242,7 @@
 				</thead>
 				<tbody>
 		<?php
-			while ($r = mysql_fetch_array($res)) { ?>
+			while ($r = mysqli_fetch_array($res)) { ?>
 				<tr>
 					<td><a href="?page=prive&amp;show=gerer_res&amp;voir=<?php echo $r['id_res']; ?>#detail_reservation" title="Voir le détail de cette réservation"><i class="fa fa-eye icon-large"></i></a> <a href="?page=prive&amp;show=gerer_res&amp;modifier=<?php echo $r['id_res']; ?>#detail_reservation" title="Modifier cette réservation"><i class="fa fa-edit icon-large"></i></a></td>
 					<td><?php echo $r['prenom']; ?> <?php echo $r['nom']; ?></td>
@@ -264,9 +264,9 @@
 	
 	<?php 
 	$req = 'SELECT reservation.id as id_res, id_client, nom, prenom, formule, DATE_FORMAT(date_a, "%d %M %Y") as date_a, DATE_FORMAT(date_d, "%d %M %Y") as date_d, nb_total, enfants, bebes, etat FROM reservation, client WHERE id_client = client.id AND date_d < CURDATE() ORDER BY date_a DESC;';
-	$res = mysql_query($req) OR die(mysql_error());
+	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
-	$nb = mysql_num_rows($res);
+	$nb = mysqli_num_rows($res);
 	if ($nb == 0) {
 		echo '<p>Aucune réservation antérieure.</p>';
 	} else { ?>
@@ -286,7 +286,7 @@
 				</thead>
 				<tbody>
 		<?php
-			while ($r = mysql_fetch_array($res)) { ?>
+			while ($r = mysqli_fetch_array($res)) { ?>
 				<tr>
 					<td><a href="?page=prive&amp;show=gerer_res&amp;voir=<?php echo $r['id_res']; ?>#detail_reservation" title="Voir le détail de cette réservation"><i class="fa fa-eye icon-large"></i></a> <a href="?page=prive&amp;show=gerer_res&amp;modifier=<?php echo $r['id_res']; ?>#detail_reservation" title="Modifier cette réservation"><i class="fa fa-edit icon-large"></i></a></td>
 					<td><?php echo $r['prenom']; ?> <?php echo $r['nom']; ?></td>

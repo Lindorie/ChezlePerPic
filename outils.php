@@ -30,8 +30,8 @@
 					if ($type == 'activites') {
 						// Traitement des catégories
 						$rq = 'SELECT * FROM categorie';
-						$rs = mysql_query($rq) OR die('Erreur cat : '.mysql_error());
-						$nb = mysql_num_rows($rs);
+						$rs = mysqli_query($link,$rq) OR die('Erreur cat : '.mysqli_error($link));
+						$nb = mysqli_num_rows($rs);
 						
 						$cat = '';
 						for ($i=1;$i<=$nb;$i++) {
@@ -125,16 +125,16 @@
 						$rq = 'UPDATE content SET titre="'.$titre.'", texte="'.$texte.'" WHERE id = '.$id.'';
 					}
 					
-					$rs = mysql_query($rq);
+					$rs = mysqli_query($link,$rq);
 					if($rs) { echo '<div class="info good">La modification a été prise en compte.</div>'; }
-					else { echo '<div class="info bad">Une erreur est survenue lors de la modification. Veuillez réessayer ou contacter le webmaster du site.<br /><p>'.mysql_error().'</p><br /><p><code>'.$rq.'</code></p></div>'; }
+					else { echo '<div class="info bad">Une erreur est survenue lors de la modification. Veuillez réessayer ou contacter le webmaster du site.<br /><p>'.mysqli_error($link).'</p><br /><p><code>'.$rq.'</code></p></div>'; }
 				} else {
 					// MODIFIER ACTIVITES
 					if($_REQUEST['page'] == 'activites') {
 						$rq = 'SELECT * FROM activites WHERE id = '.$_REQUEST['id'].''; 
-						$rs = mysql_query($rq) OR die('Erreur : '.mysql_error().'<br />'.$rq);
+						$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link).'<br />'.$rq);
 						
-						while ($activites = mysql_fetch_array($rs)) {
+						while ($activites = mysqli_fetch_array($rs)) {
 						
 							// Traitement des catégories
 							// Catégories déjà cochées
@@ -142,14 +142,14 @@
 							$nb_cat = count($cat);
 							if ($nb_cat > 0) {
 								$rq2 = 'SELECT id, libelle FROM categorie WHERE id IN ('.$cat.');';
-								$rs2 = mysql_query($rq2) OR die('Erreur 2 : '.mysql_error().'<br />'.$rq2);
+								$rs2 = mysqli_query($link,$rq2) OR die('Erreur 2 : '.mysqli_error($link).'<br />'.$rq2);
 							// liste autres catégories
 							$rq3 = 'SELECT id, libelle FROM categorie WHERE id NOT IN ('.$cat.');';
-							$rs3 = mysql_query($rq3) OR die('Erreur 3 : '.mysql_error());
+							$rs3 = mysqli_query($link,$rq3) OR die('Erreur 3 : '.mysqli_error($link));
 							} else {
 								
 								$rq3 = 'SELECT id, libelle FROM categorie ';
-								$rs3 = mysql_query($rq3) OR die('Erreur 2b : '.mysql_error().'<br />'.$rq3);
+								$rs3 = mysqli_query($link,$rq3) OR die('Erreur 2b : '.mysqli_error($link).'<br />'.$rq3);
 							}
 							echo '<div class="form_modif">';
 							echo '<h1>Modifier : <span>'.$activites['titre'].'</span></h1>';
@@ -159,12 +159,12 @@
 								echo '<p><label for="titre">Titre</label><input type="text" id="titre" name="titre" value="'.$activites['titre'].'" /></p>';
 								echo '<p><label for="cat">Catégories</label></p>';
 								echo '<p class="checkbox">';
-									while ($cat = mysql_fetch_array($rs2)) {
+									while ($cat = mysqli_fetch_array($rs2)) {
 										echo '<input type="checkbox" name="cat'.$cat[0].'" id="cat'.$cat[0].'" value="'.$cat[0].'" checked="checked" /><label for="cat'.$cat[0].'">'.$cat[1].'</label>';
 									}
 								echo '</p>';								
 								echo '<p class="checkbox">';
-									while ($cat2 = mysql_fetch_array($rs3)) {
+									while ($cat2 = mysqli_fetch_array($rs3)) {
 										echo '<input type="checkbox" name="cat'.$cat2[0].'" id="cat'.$cat2[0].'" value="'.$cat2[0].'" /><label for="cat'.$cat2[0].'">'.$cat2[1].'</label>';
 									}
 								echo '</p>';
@@ -193,18 +193,18 @@
 						// MODIFIER NEWS
 						if ($_REQUEST['type'] == 'news' OR $_REQUEST['page'] == 'news') { 
 							$rq = 'SELECT * FROM news WHERE id = '.$_REQUEST['id'].''; 
-							$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+							$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 						} else if ($_REQUEST['type'] == 'livredor' OR $_REQUEST['page'] == 'livredor') {
 						// MODIFIER TELMOIGNAGES
 							$rq = 'SELECT * FROM livre_dor WHERE id = '.$_REQUEST['id'].''; 
-							$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+							$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 						} else {
 						// MODIFIER AUTRES
 							$rq = 'SELECT * FROM content WHERE id = '.$_REQUEST['id'].''; 
-							$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+							$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 						}
 						
-						while ($content = mysql_fetch_array($rs)) {
+						while ($content = mysqli_fetch_array($rs)) {
 							echo '<div class="form_modif">';
 							echo '<h1>Modifier : <span>'.htmlspecialchars_decode($content['titre']).'</span></h1>';
 								echo '<form method="post" action="">';
@@ -255,8 +255,8 @@
 					
 					// Traitement des catégories
 					$rq = 'SELECT * FROM categorie';
-					$rs = mysql_query($rq) OR die('Erreur cat : '.mysql_error());
-					$nb = mysql_num_rows($rs);
+					$rs = mysqli_query($link,$rq) OR die('Erreur cat : '.mysqli_error($link));
+					$nb = mysqli_num_rows($rs);
 					
 					$cat = '';
 					for ($i=1;$i<=$nb;$i++) {
@@ -344,7 +344,7 @@
 						$rq = 'INSERT INTO content(titre,texte,page) VALUES ("'.$titre.'", "'.$texte.'", "'.$page.'")';
 					}
 					
-					$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+					$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 					if($rs) { echo '<div class="info good">Le contenu a été ajouté.</div>'; }
 					else { echo '<div class="info bad">Une erreur est survenue lors de la création du contenu. Veuillez réessayer ou contacter le webmaster du site.</div>'; }
 				} else {
@@ -353,7 +353,7 @@
 						
 							// Traitement des catégories
 							$rq3 = 'SELECT id, libelle FROM categorie';
-							$rs3 = mysql_query($rq3) OR die('Erreur 3 : '.mysql_error());
+							$rs3 = mysqli_query($link,$rq3) OR die('Erreur 3 : '.mysqli_error($link));
 							
 							echo '<div class="form_modif">';
 							echo '<h1>Ajouter : <span>Activité</span></h1>';
@@ -362,7 +362,7 @@
 								echo '<p><label for="titre">Titre</label><input type="text" id="titre" name="titre" value="'.$_POST['titre'].'" /></p>';
 								echo '<p><label for="cat">Catégories</label></p>';							
 								echo '<p class="checkbox">';
-									while ($cat2 = mysql_fetch_array($rs3)) {
+									while ($cat2 = mysqli_fetch_array($rs3)) {
 										echo '<input type="checkbox" name="cat'.$cat2[0].'" id="cat'.$cat2[0].'" value="'.$cat2[0].'" /><label for="cat'.$cat2[0].'">'.$cat2[1].'</label>';
 									}
 								echo '</p>';
@@ -419,11 +419,11 @@
 			case "supprimer":
 				if ($_REQUEST['confirm'] == 'oui') {
 					if($_REQUEST['type'] == 'news') {
-						mysql_query('DELETE FROM news WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysql_error());
+						mysqli_query($link,'DELETE FROM news WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysqli_error($link));
 					} else if ($_REQUEST['type'] == 'activites') {
 					
 					} else {
-						mysql_query('DELETE FROM content WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysql_error());
+						mysqli_query($link,'DELETE FROM content WHERE id = '.$_REQUEST['id']) OR die('Erreur : '.mysqli_error($link));
 					}
 				} else {
 				

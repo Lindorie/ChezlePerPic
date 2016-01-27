@@ -31,7 +31,7 @@ Mr et Mme PIC Gérard<br />
 			$message = htmlspecialchars($message);
 			
 			$req = 'INSERT INTO contact VALUES ("", "'.$nom.'", "'.$email.'", "'.$objet.'", "'.$message.'", NOW())';
-			if (mysql_query($req)) {
+			if (mysqli_query($link,$req)) {
 				if ($_SERVER['HTTP_HOST'] != "localhost") {
 						$sujet = "Chezleperpic.fr : nouveau message";
 						$destinataires = 'mireille.pic@gmail.com, pic.carine@gmail.com';
@@ -48,7 +48,7 @@ Mr et Mme PIC Gérard<br />
 				}
 				echo '<div class="info good">Votre message a bien été enregistré, nous vous recontacterons sous peu.</div>';
 			} else {
-				echo mysql_error();
+				echo mysqli_error($link);
 			}
 		}
 	}

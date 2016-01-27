@@ -6,13 +6,13 @@ $jour = $_GET['jour'];
 
 
 $requete = 'SELECT id, etat,date_d FROM reservation WHERE  "'.$jour.'" BETWEEN date_a AND date_d AND date_a != "'.$jour.'" AND date_d != "'.$jour.'"';
-$resultat = mysql_query($requete) or die (mysql_error());
+$resultat = mysqli_query($link,$requete) or die (mysqli_error($link));
 
-$nb = mysql_num_rows($resultat);        
+$nb = mysqli_num_rows($resultat);
 		if($nb == 0) { echo utf8_decode("false");}
 		else { 
 			echo $jour;
 		}
 
-mysql_close($connexion);
+mysqli_close($connexion);
 ?>

@@ -2,9 +2,9 @@
 <?php
 
 	$rq = 'SELECT id, titre, texte FROM content WHERE page = "reservation" ORDER BY ordre';
-	$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+	$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 	
-	while($content = mysql_fetch_array($rs)) {
+	while($content = mysqli_fetch_array($rs)) {
 		if($content['titre'] != "") { echo "<h1><span>".$content['titre']."</span></h1>"; }
 		if($content['texte'] != "") { echo "<p>".htmlspecialchars_decode($content['texte'])."</p>"; }
 		

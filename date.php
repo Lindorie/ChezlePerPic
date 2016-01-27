@@ -7,10 +7,10 @@ class Date{
 	
 	function getEvents($yearD,$yearF) {
 		$req = 'SELECT id, date_a,date_d,etat FROM reservation WHERE YEAR(date_a) BETWEEN '.$yearD.' AND '.$yearF;
-		$res = mysql_query($req);
+		$res = mysqli_query($link,$req);
 		$r = array();
 		
-		while($d = mysql_fetch_object($res)) {
+		while($d = mysqli_fetch_object($res)) {
 			$d1 = new DateTime($d->date_a);
 			$d2 = new DateTime($d->date_d);
 			$r[strtotime($d->date_a)][$d->id] = $d->etat;

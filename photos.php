@@ -26,28 +26,28 @@
 		if (isset($_POST['submit_titre'])) {
 			$titre = htmlspecialchars($_POST['titre']);
 			$req = 'UPDATE photos SET titre = "'.$titre.'" WHERE id = '.$_POST['id'];
-			if(mysql_query($req)) {
+			if(mysqli_query($link,$req)) {
 				echo '<div class="info good">La titre de la photo a bien été modifié : '.$titre.'.</div>';
 			} else {
-				echo '<div class="info bad">Erreur MySQL : '.mysql_error().'<br />'.$req.'</div>';
+				echo '<div class="info bad">Erreur MySQL : '.mysqli_error($link).'<br />'.$req.'</div>';
 			}
 		} 
 		// Modification de l'ordre
 		else if(isset($_POST['submit_ordre_img'])) {
 				$req = 'UPDATE photos SET ordre = "'.$_POST['ordre'].'" WHERE id = '.$_POST['id'];
-				if(mysql_query($req)) {
+				if(mysqli_query($link,$req)) {
 					echo '<div class="info good">L\'ordre de la photo a bien été modifié : '.$_POST['ordre'].'.</div>';
 				} else {
-					echo '<div class="info bad">Erreur MySQL : '.mysql_error().'<br />'.$req.'</div>';
+					echo '<div class="info bad">Erreur MySQL : '.mysqli_error($link).'<br />'.$req.'</div>';
 				}
 		}
 		// Déplacement de l'image
 		else if(isset($_POST['submit_gal_dep'])) {
 				$req = 'UPDATE photos SET galerie = "'.$_POST['gal_dep'].'" WHERE id = '.$_POST['id'];
-				if(mysql_query($req)) {
+				if(mysqli_query($link,$req)) {
 					echo '<div class="info good">La photo a été déplacée.</div>';
 				} else {
-					echo '<div class="info bad">Erreur MySQL : '.mysql_error().'<br />'.$req.'</div>';
+					echo '<div class="info bad">Erreur MySQL : '.mysqli_error($link).'<br />'.$req.'</div>';
 				}
 		}
 	
@@ -63,8 +63,8 @@
 					else {
 						$titre = htmlspecialchars($_POST['titre']);
 						$req = 'INSERT INTO photos VALUES ("", "'.$titre.'", "'.$nom.'", "'.$_POST['galerie'].'", "")';
-						if(mysql_query($req)) { echo '<div class="info good">La photo a bien été ajoutée.</div>'; }
-						else echo '<div class="info bad">'.mysql_error().'</div>';
+						if(mysqli_query($link,$req)) { echo '<div class="info good">La photo a bien été ajoutée.</div>'; }
+						else echo '<div class="info bad">'.mysqli_error($link).'</div>';
 						
 					}
 				}
@@ -77,8 +77,8 @@
 								<select name="galerie" id="galerie">
 									<?php 
 										$req = 'SELECT id, libelle, libelle_en FROM galerie ORDER BY ordre ASC';
-										$res = mysql_query($req) OR die(mysql_error());
-										while ($gal = mysql_fetch_array($res)) {
+										$res = mysqli_query($link,$req) OR die(mysqli_error($link));
+										while ($gal = mysqli_fetch_array($res)) {
 											echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
 										}
 									?>
@@ -107,8 +107,8 @@
 							<select name="galerie" id="galerie">
 								<?php 
 									$req = 'SELECT id, libelle, libelle_en FROM galerie ORDER BY ordre ASC';
-									$res = mysql_query($req) OR die(mysql_error());
-									while ($gal = mysql_fetch_array($res)) {
+									$res = mysqli_query($link,$req) OR die(mysqli_error($link));
+									while ($gal = mysqli_fetch_array($res)) {
 										echo '<option value="'.$gal['id'].'">'.$gal['libelle'].'</option>';
 									}
 								?>
@@ -174,32 +174,32 @@
 						$titre = htmlspecialchars($_POST['titre']);
 						$titre_en = htmlspecialchars($_POST['titre_en']);
 						$req = 'INSERT INTO galerie VALUES ("", "'.$titre.'", "'.$titre_en.'", 0)';
-						if(mysql_query($req)) { echo '<div class="info good">La galerie « '.$titre.' » a bien été ajoutée.</div>'; }
-						else echo '<div class="info bad">'.mysql_error().'</div>';
+						if(mysqli_query($link,$req)) { echo '<div class="info good">La galerie « '.$titre.' » a bien été ajoutée.</div>'; }
+						else echo '<div class="info bad">'.mysqli_error($link).'</div>';
 					}
 					else if(isset($_POST['submit_titre_gal'])) {
 							$titre = htmlspecialchars($_POST['titre']);
 							$titre_en = htmlspecialchars($_POST['titre_en']);
 							$req = 'UPDATE galerie SET libelle = "'.$titre.'", libelle_en = "'.$titre_en.'" WHERE id = '.$_POST['id'];
-							if(mysql_query($req)) {
+							if(mysqli_query($link,$req)) {
 								echo '<div class="info good">La titre de la galerie a bien été modifié : '.$titre.'.</div>';
 							} else {
-								echo '<div class="info bad">Erreur MySQL : '.mysql_error().'<br />'.$req.'</div>';
+								echo '<div class="info bad">Erreur MySQL : '.mysqli_error($link).'<br />'.$req.'</div>';
 							}
 					}
 					else if(isset($_POST['submit_ordre_gal'])) {
 							$req = 'UPDATE galerie SET ordre = "'.$_POST['ordre'].'" WHERE id = '.$_POST['id'];
-							if(mysql_query($req)) {
+							if(mysqli_query($link,$req)) {
 								echo '<div class="info good">L\'ordre de la galerie a bien été modifié : '.$_POST['ordre'].'.</div>';
 							} else {
-								echo '<div class="info bad">Erreur MySQL : '.mysql_error().'<br />'.$req.'</div>';
+								echo '<div class="info bad">Erreur MySQL : '.mysqli_error($link).'<br />'.$req.'</div>';
 							}
 					}
 				
 					$req = 'SELECT id, libelle, libelle_en, ordre FROM galerie ORDER BY ordre ASC';
-					$res = mysql_query($req) OR die(mysql_error());
+					$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 					
-					$nb = mysql_num_rows($res);
+					$nb = mysqli_num_rows($res);
 					if ($nb == 0) { echo '<p>Aucune galerie.</p>'; }
 					else {
 					?>
@@ -213,11 +213,11 @@
 							</thead>
 							<tbody>
 					<?php
-							while ($g = mysql_fetch_array($res)) :
+							while ($g = mysqli_fetch_array($res)) :
 							
 							$rq = 'SELECT COUNT(id) AS nb FROM photos WHERE galerie = '.$g['id'];
-							$rs = mysql_query($rq) OR die(mysql_error());
-							$nb_ph = mysql_fetch_array($rs);
+							$rs = mysqli_query($link,$rq) OR die(mysqli_error($link));
+							$nb_ph = mysqli_fetch_array($rs);
 					?>
 							<tr>
 								<td class="titre galerie">
@@ -257,26 +257,26 @@
 
 <?php else : 
 	$req = 'SELECT id, libelle, libelle_en FROM galerie ORDER BY ordre ASC';
-	$res = mysql_query($req) OR die(mysql_error());
+	$res = mysqli_query($link,$req) OR die(mysqli_error($link));
 	
-	$nb = mysql_num_rows($res);
+	$nb = mysqli_num_rows($res);
 	if ($nb == 0) { echo '<p>Aucune galerie.</p>'; }
 	else {
 		
-		while ($g = mysql_fetch_array($res)) :
+		while ($g = mysqli_fetch_array($res)) :
 		
 		echo '<div class="galerie">';
 		echo '<h2><span>'.$g['libelle'].'</span></h2>';
 	
 		$req2 = 'SELECT id, titre, nom, ordre FROM photos WHERE galerie = '.$g['id'].' ORDER BY galerie ASC, ordre ASC';
-		$res2 = mysql_query($req2) OR die(mysql_error());
+		$res2 = mysqli_query($link,$req2) OR die(mysqli_error($link));
 		
-		$nb2 = mysql_num_rows($res2);
+		$nb2 = mysqli_num_rows($res2);
 		if ($nb2 == 0) { echo '<p>Aucune photo dans cette galerie.</p>'; }
 		else {?>
 			<ul class="liste_photos">
 		<?php
-				while ($p = mysql_fetch_array($res2)) :
+				while ($p = mysqli_fetch_array($res2)) :
 		?>
 				<li><a class="colorbox" title="<?php echo $p['titre']; ?>" href="photos/<?php echo $p['nom']; ?>"><img src="photos/mini/<?php echo $p['nom']; ?>" alt="<?php echo $p['titre']; ?>" /></a></li>
 		<?php 	

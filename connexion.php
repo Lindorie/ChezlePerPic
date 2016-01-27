@@ -11,12 +11,12 @@
 				$permission = 'client';
 			}
 			
-			$rs = mysql_query($rq) OR die('Erreur : '.mysql_error());
+			$rs = mysqli_query($link,$rq) OR die('Erreur : '.mysqli_error($link));
 			
-			$nb = mysql_num_rows($rs);
+			$nb = mysqli_num_rows($rs);
 			if ($nb == 0) { $erreur .= "L'identifiant <span class='italic'>".$_POST['identifiant']."</span> est inconnu."; }
 			else {
-				while($user = mysql_fetch_array($rs)) {
+				while($user = mysqli_fetch_array($rs)) {
 					if ($user['password'] != md5(sha1($_POST['password']))) { $erreur .= "Le mot de passe est incorrect."; }
 					else {
 						session_start();

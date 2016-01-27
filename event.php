@@ -6,15 +6,15 @@ include "inc-connexion.php";
 //if (!isset($_GET['date'])) $_GET['date'] = "2010-10-22";
 
 $requete = 'SELECT id_evenement, titre, type, LEFT(code_postal,2) as code_postal, ville, type FROM calendrier WHERE date = "'.$_GET['date'].'"';
-$resultat = mysql_query($requete) or die (mysql_error());
+$resultat = mysqli_query($link,$requete) or die (mysqli_error($link));
 
-$nb = mysql_num_rows($resultat);        
+$nb = mysqli_num_rows($resultat);
 		if($nb == 0) {
 			echo 'Aucun �v�nement.'; 
 		}
 			else {
 echo '<ul>';
-while ($event=mysql_fetch_array($resultat)) {
+while ($event=mysqli_fetch_array($resultat)) {
 	if ($event['type'] == 'club' AND $_SESSION['pseudo'] != "") {
 		$class = "club";
 		echo '<li><a class="'.$class.'" href="index.php?page=prive&amp;lvl2=calendrier&amp;event='.$event['id_evenement'].'">'.$event['titre'].'</a> ('.$event['code_postal'].' - '.$event['ville'].')</li>';
@@ -36,5 +36,5 @@ while ($event=mysql_fetch_array($resultat)) {
 echo '</ul>';
 }
 
-mysql_close($connexion);
+mysqli_close($connexion);
 ?>
