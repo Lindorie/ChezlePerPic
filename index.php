@@ -43,7 +43,41 @@
 		<script type="text/javascript" src="js/datepicker/js/utils.js"></script>
 		<!--link rel="stylesheet" media="screen" type="text/css" href="js/datepicker/css/layout.css" /-->
 		<script src="nicEdit/nicEdit.js" type="text/javascript"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBRUteS9Sm5AWG-gPettVu9550lCn4BXo&amp;sensor=false&amp;language=fr&amp;region=fr"></script>
+		<script type="text/javascript">
+		  function initialize() {
+			var mapOptions = {
+			  center: new google.maps.LatLng(44.615393,5.45384),
+			  zoom: 17,
+			  mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("googlemap"),
+				mapOptions);
+			//var panel = document.getElementById("panel");
+			//var dir = new GDirections(map, panel);
+			//dir.load(+<?=$depart;?>+" to 44.615393,5.45384");
+			//dir.load("Sonnay, France to Luc-en-diois, France");
 
+			var image = 'images/house.png';
+		    var myLatLng = new google.maps.LatLng(44.615393,5.45384);
+		    var beachMarker = new google.maps.Marker({
+			    position: myLatLng,
+			    map: map,
+			    icon: image
+		    });
+			var image2 = 'images/car.png';
+		    var myLatLng2 = new google.maps.LatLng(44.615049,5.454634);
+		    var beachMarker2 = new google.maps.Marker({
+			    position: myLatLng2,
+			    map: map,
+			    icon: image2
+		    });
+
+		  }
+		  google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+
+		<script type="text/javascript">bkLib.onDomLoaded(function() {new nicEditor({fullPanel : true}).panelInstance('nicedit'); });</script>
 		
 		<!-- SET OF ICONS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -339,7 +373,7 @@
 			$bodyclass = 'home';
 		}
 	?>
-	<body class="<?=$bodyclass;?>">
+	<body class="<?=$bodyclass;?>" onload="initialize()">
 		<div id="body2">
 		<div id="wrap">
 			<div id="col_gauche">
