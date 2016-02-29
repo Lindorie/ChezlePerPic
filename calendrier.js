@@ -241,14 +241,16 @@ $(window).load(function(){
 		var moisNow = dateNow.getMonth()+1;
 		var anneeNow = dateNow.getFullYear();
 		var fleche = $('#calendar #fleche_avant a').find("span").html();
-		var flecheArray = fleche.split('-');
+		if (typeof fleche != 'undefined')  {
+			var flecheArray = fleche.split('-');
 
-
-		if (flecheArray[0] == anneeNow && flecheArray[1] == moisNow) {
-			$('#calendar #fleche_avant').hide();
-		} else {
-			$('#calendar #fleche_avant').show();
+			if (flecheArray[0] == anneeNow && flecheArray[1] == moisNow) {
+				$('#calendar #fleche_avant').hide();
+			} else {
+				$('#calendar #fleche_avant').show();
+			}
 		}
+
 	}
 	flechePrev();
 });

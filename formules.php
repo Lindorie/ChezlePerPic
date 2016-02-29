@@ -19,8 +19,8 @@
 			if($_SESSION['permission'] == "admin") { 
 				echo '<div class="outils admin">';
 					echo '<div class="btn-group">';
-						echo '<a class="btn btn-small" href="index.php?page=formules&amp;outils=modifier&amp;id='.$content['id'].'"><i class="fa fa-edit"></i></a>&nbsp;';
-						echo '<a class="btn btn-small"  href="index.php?page=formules&amp;outils=supprimer&amp;id='.$content['id'].'"><i class="fa fa-trash-o"></i></a>';
+						echo '<a class="btn btn-default" href="index.php?page=formules&amp;outils=modifier&amp;id='.$content['id'].'"><i class="fa fa-edit"></i></a>&nbsp;';
+						echo '<a class="btn btn-default"  href="index.php?page=formules&amp;outils=supprimer&amp;id='.$content['id'].'"><i class="fa fa-trash-o"></i></a>';
 					echo '</div>';
 				echo '</div>';
 				

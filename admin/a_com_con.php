@@ -44,7 +44,7 @@
 						<td><a href="admin/documents/<?php echo $d['nom'] ?>"><?php echo $d['titre'] ?></a></td>
 						<td class="alignCenter"><?php echo $d['nom'] ?></td>
 						<td class="alignCenter"><?php echo $d['date'] ?></td>
-						<td class="alignCenter"><a href="?page=prive&amp;show=com_con&amp;outils=supprimerdocs&amp;id=<?php echo $d['id'] ?>" class="btn btn-small btn-danger"><i class="fa fa-trash"></i> Supprimer</a></td>
+						<td class="alignCenter"><a href="?page=prive&amp;show=com_con&amp;outils=supprimerdocs&amp;id=<?php echo $d['id'] ?>" class="btn btn-default btn-danger"><i class="fa fa-trash"></i> Supprimer</a></td>
 					</tr>
 <?php 
 			} ?>
@@ -162,7 +162,7 @@
 					<?php } ?></p>
 					<p><?php echo $m['date']; ?></p>
 					<?php if ($_SESSION['permission'] == 'admin') { ?>
-					<a href="?page=prive&amp;show=com_con&amp;outils=supprimermsg&amp;id=<?php echo $m['id']; ?>#messages" class="btn btn-danger btn-small"><i class="fa fa-trash"></i> Supprimer</a>
+					<a href="?page=prive&amp;show=com_con&amp;outils=supprimermsg&amp;id=<?php echo $m['id']; ?>#messages" class="btn btn-danger btn-default"><i class="fa fa-trash"></i> Supprimer</a>
 					<?php } ?>
 				</td>
 				<td><div class="message"><?php echo $m['message']; ?></div></td>
@@ -208,7 +208,7 @@
 					<?php } ?></p>
 					<p><?php echo $r['date']; ?></p>
 					<?php if ($_SESSION['permission'] == 'admin') { ?>
-					<a href="?page=prive&amp;show=com_con&amp;outils=supprimermsg&amp;id=<?php echo $r['id']; ?>#messages" class="btn btn-danger btn-small"><i class="fa fa-trash"></i> Supprimer</a>
+					<a href="?page=prive&amp;show=com_con&amp;outils=supprimermsg&amp;id=<?php echo $r['id']; ?>#messages" class="btn btn-danger btn-default"><i class="fa fa-trash"></i> Supprimer</a>
 					<?php } ?>
 					</td>
 					<td><div class="message"><?php echo $r['message']; ?></div></td>
@@ -217,7 +217,7 @@
 		</tbody>
 	</table>
 	<?php } ?>
-	<div class="alignRight"><a href="?page=prive&amp;show=com_con&amp;outils=envoimsg&amp;parent=<?php echo $m['id']; ?>#messages" class="btn btn-small btn-info"><i class="fa fa-reply"></i> Répondre</a></div>
+	<div class="alignRight"><a href="?page=prive&amp;show=com_con&amp;outils=envoimsg&amp;parent=<?php echo $m['id']; ?>#messages" class="btn btn-default btn-info"><i class="fa fa-reply"></i> Répondre</a></div>
 <?php 
 	}
 ?>
@@ -266,16 +266,16 @@
 	<form method="post" action="#messages" id="messages">
 		<p>
 			<label for="titre">Titre</label>
-			<div class="input-prepend">
-				<span class="add-on"><i class="fa fa-envelope-alt"></i></span>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-envelope-alt"></i></span>
 				
 				<i class="fa fa fanput class="span4" name="titre" id="titre" type="text" placeholder="Titre du message" value="<?php if($titre) echo $titre; ?>" />
 			</div>
 		</p>
 		<p>
 			<label for="dest">Destinataire</label>
-			<div class="input-prepend">
-				<span class="add-on"><i class="fa fa-user"></i></span>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user"></i></span>
 				<select class="span4" name="dest" id="dest" placeholder="Destinataire">
 					<?php if ($_SESSION['permission'] == 'consultant') { ?>
 					<option value="1">Administrateur</option> 
@@ -287,8 +287,8 @@
 		</p>
 		<p>
 			<label for="msg">Message</label>
-			<div class="input-prepend">
-				<span class="add-on"><i class="fa fa-comment"></i></span>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-comment"></i></span>
 				<textarea class="span4" name="msg" id="msg" rows="9"><?php if(isset($_POST['msg']) AND $_POST['msg'] != "") echo $_POST['msg']; ?></textarea>
 			</div>
 		</p>
@@ -334,8 +334,8 @@
 	<form id="documents" method="post" action="#documents" enctype="multipart/form-data">
 			<p>
 				<label for="titre">Titre</label>
-				<div class="input-prepend">
-					<span class="add-on"><i class="fa fa-file"></i></span>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-file"></i></span>
 					<i class="fa fa fanput class="span4" name="titre" id="titre" type="text" placeholder="Titre du document" />
 				</div>
 			</p>

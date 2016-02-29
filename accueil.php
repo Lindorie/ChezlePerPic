@@ -11,7 +11,7 @@
 			
 			if($_SESSION['permission'] == "admin") { 
 				echo '<div class="outils admin">';
-					echo '<a href="index.php?page=accueil&outils=modifier&id='.$content['id'].'" class="btn btn-small"><i class="fa fa-edit"></i> Modifier</a>';
+					echo '<a href="index.php?page=accueil&outils=modifier&id='.$content['id'].'" class="btn btn-default"><i class="fa fa-edit"></i> Modifier</a>';
 				echo '</div>';
 				
 			}
@@ -99,7 +99,7 @@
 				
 				if($_SESSION['permission'] == "admin") { 
 					echo '<div class="outils admin">';
-						echo '<a href="index.php?outils=ajouter&type=news" class="btn btn-small"><i class="fa fa-plus"></i> Ajouter</a>';
+						echo '<a href="index.php?outils=ajouter&type=news" class="btn btn-default"><i class="fa fa-plus"></i> Ajouter</a>';
 					echo '</div>';
 					
 				}

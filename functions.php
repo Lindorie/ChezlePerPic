@@ -40,6 +40,7 @@ function liste_clients($id = NULL) {
 	if ($nb == 0) { $liste['erreur'] = 'Aucun client.'; }
 	else {
 		while ($c = mysqli_fetch_array($res)) {
+			$liste[$c['id']]['id'] = $c['id'];
 			$liste[$c['id']]['nom'] = $c['nom'];
 			$liste[$c['id']]['prenom'] = $c['prenom'];
 			$liste[$c['id']]['email'] = $c['email'];
@@ -162,8 +163,9 @@ function unzip_file($file, $destination_temp, $galerie) {
  
 
 function supprimer ($table, $id) {
+	global $prefix, $link;
 	$erreur = "";
-	$req = 'DELETE FROM '.$prefix.''.$table.' WHERE id = '.$id;
+	$req = 'DELETE FROM '.$prefix.$table.' WHERE id = '.$id;
 	if(mysqli_query($link,$req)) {
 		$succes = '<div class="info good">La suppression a bien été effectuée.</div>';
 	} else $erreur .= mysqli_error($link);

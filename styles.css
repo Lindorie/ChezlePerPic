@@ -497,7 +497,7 @@ form label {
 cursor: pointer;
 font-weight: bold;
 display: inline-block;
-width: 130px;
+
 vertical-align: top;
 }
 
@@ -554,9 +554,7 @@ margin: 0 0 0 30px;
 
 form#reservation label {
 font-size: 100%;
-line-height: 1;
 vertical-align: middle;
-width: auto;
 }
 
 form#reservation p.cent label {
@@ -594,19 +592,19 @@ form#reservation .line-3 {
 width: 100%;
 }
 
-form#reservation .line-1 .wrap-elem { width: 100%; }
+/*form#reservation .line-1 .wrap-elem { width: 100%; }
 
 form#reservation .line-2 .wrap-elem  { width: 50%; }
 
-form#reservation .line-3 .wrap-elem  { width: 33.3333%; }
+form#reservation .line-3 .wrap-elem  { width: 33.3333%; }*/
 
 form#reservation .wrap-elem {
 display: block;
-float: left;
+
 }
 
-form#reservation .input-prepend {
-display: block;
+form#reservation .input-group {
+
 }
 
 form#reservation #arrivee,
@@ -803,6 +801,7 @@ text-decoration: none;
 }
 
 .interne a.btn-info,
+.interne a.btn-warning,
 .interne a.btn-danger {
 color: #fff; 
 }
@@ -1038,7 +1037,6 @@ margin: 10px auto 20px 0;
 }
 
 #calendar .wrap {
-box-shadow: 3px 3px 3px #808080;
 border: 2px solid #F0EAF2;
 background: #fff;
 padding: 10px 20px;
@@ -1408,11 +1406,32 @@ color: #fff;
 /* Détail de la réservation ADMIN */
 
 #detail_reservation {
-background: #fff;
+/*background: #fff;
 box-shadow: 3px 3px 5px #ddd;
 border-radius: 5px;
-padding: 10px;
+padding: 10px;*/
 position: relative;
+}
+
+#detail_reservation .client {
+	overflow: hidden;
+	background: #DB8FBB;
+	padding: 10px;
+	border-bottom: 2px solid #b274a8;
+	margin-bottom: 20px;
+}
+
+#detail_reservation .client .clientName {
+	color: #573b5e;
+	line-height: 2.5;
+}
+
+#detail_reservation .details {
+	margin-bottom: 20px;
+}
+
+#detail_reservation .details p {
+	line-height: 1.7;
 }
 
 #detail_reservation .num_reserv {
@@ -1424,6 +1443,11 @@ font-size: 150%;
 #detail_reservation .etat span {
 padding: 1px 5px;
 display: inline-block;
+}
+
+
+#detail_reservation div#form_maj_etat option {
+	padding: 3px 5px;
 }
 
 #detail_reservation .etat.rose span,
@@ -1460,8 +1484,12 @@ text-align: left;
 
 #detail_reservation div#form_maj_client {
 top: 20px;
-height: 100px;
+height: 150px;
 left: 200px;
+}
+
+#detail_reservation div#form_maj_client legend {
+	margin-bottom: 20px;
 }
 
 #detail_reservation div#form_maj_etat fieldset,
@@ -1480,6 +1508,8 @@ position: absolute;
 top: 3px;
 right: 5px;
 z-index: 99;
+font-size: 150%;
+text-decoration: none;
 }
 
 #detail_reservation div#form_maj_client .cancel a,
@@ -1532,13 +1562,12 @@ table.tarifs th {
 text-align: center;
 background: #ccc;
 font-weight: bold;
-border: 1px solid #fff;
 padding: 3px 0;
 }
 
 table.tarifs td {
 border-collapse: collapse;
-border: 1px solid #ccc;
+border: 1px solid #fff;
 padding: 5px;
 min-width: 50px;
 }
@@ -1547,19 +1576,20 @@ table.liste_photos {
 background: #fff;
 width: 100%;    
 margin: 30px 0;
-box-shadow: 0 3px 5px #AB560B;
-}
-
-table.liste_photos th {
-text-align: center;
-background: #ddd;
+border: 1px solid #B274A8;
 }
 
 table.liste_photos td,
 table.liste_photos th {
 border-collapse: collapse;
 padding: 5px;
-border: 1px solid #ddd;
+border: 1px solid #fff;
+	background: #F0EAF2;
+}
+
+table.liste_photos th {
+	text-align: center;
+	background: #DB8EBA;
 }
 
 table.liste_photos td.image {
@@ -1592,7 +1622,7 @@ top: -5px;
 
 table.liste_photos td.ordre,
 table.liste_photos td.outils {
-width: 100px;
+min-width: 150px;
 text-align: center;
 }
 
@@ -1802,4 +1832,52 @@ input.en {
 background: #fff url(images/en.png) no-repeat 5px 3px;
 padding-left: 25px;
 border: 1px solid #ccc;
+}
+
+/* Tabs */
+
+ul.nav-tabs {
+	border-color: #AB560B;
+}
+
+ul.nav-tabs a {
+	text-decoration: none;
+	font-size: 120%;
+	border: 0;
+}
+
+ul.nav-tabs li {
+	margin-bottom: 0;
+}
+
+ul.nav-tabs li.active a:focus,
+ul.nav-tabs li.active a:active,
+ul.nav-tabs li.active a:hover,
+ul.nav-tabs li.active a,
+ul.nav-tabs li a:hover {
+	font-weight: bold;
+	background: #f2811d;
+	color: #fff;
+	border: 0;
+}
+
+ul.nav-tabs li a:hover {
+	background: #f8bf8c;
+}
+
+.navbar a {
+	text-decoration: none;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+
+	font-weight: bold;
+	background: #f2811d;
+	color: #fff;
+}
+
+.form-horizontal {
+	overflow: hidden;
 }

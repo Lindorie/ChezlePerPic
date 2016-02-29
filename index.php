@@ -43,51 +43,13 @@
 		<script type="text/javascript" src="js/datepicker/js/utils.js"></script>
 		<!--link rel="stylesheet" media="screen" type="text/css" href="js/datepicker/css/layout.css" /-->
 		<script src="nicEdit/nicEdit.js" type="text/javascript"></script>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBRUteS9Sm5AWG-gPettVu9550lCn4BXo&amp;sensor=false&amp;language=fr&amp;region=fr"></script>
-		<script type="text/javascript">
-		  function initialize() {
-			var mapOptions = {
-			  center: new google.maps.LatLng(44.615393,5.45384),
-			  zoom: 17,
-			  mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			var map = new google.maps.Map(document.getElementById("googlemap"),
-				mapOptions);
-			//var panel = document.getElementById("panel");
-			//var dir = new GDirections(map, panel);
-			//dir.load(+<?=$depart;?>+" to 44.615393,5.45384");
-			//dir.load("Sonnay, France to Luc-en-diois, France");
-				
-			var image = 'images/house.png';
-		    var myLatLng = new google.maps.LatLng(44.615393,5.45384);
-		    var beachMarker = new google.maps.Marker({
-			    position: myLatLng,
-			    map: map,
-			    icon: image
-		    });
-			var image2 = 'images/car.png';
-		    var myLatLng2 = new google.maps.LatLng(44.615049,5.454634);
-		    var beachMarker2 = new google.maps.Marker({
-			    position: myLatLng2,
-			    map: map,
-			    icon: image2
-		    });
 
-		  }
-		  google.maps.event.addDomListener(window, 'load', initialize);
-		</script>
-
-		<script type="text/javascript">bkLib.onDomLoaded(function() {new nicEditor({fullPanel : true}).panelInstance('nicedit'); });</script>
 		
 		<!-- SET OF ICONS -->
-		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet" />
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -102,6 +64,7 @@
 		<!--
 		
 			$(window).load(function(){
+				$('[data-toggle="popover"]').popover();
 
 				$(".colorbox").colorbox({rel:'colorbox', transition:"elastic", width:"75%", height:"75%"});
 				
@@ -376,7 +339,7 @@
 			$bodyclass = 'home';
 		}
 	?>
-	<body class="<?=$bodyclass;?>" onload="initialize()">
+	<body class="<?=$bodyclass;?>">
 		<div id="body2">
 		<div id="wrap">
 			<div id="col_gauche">

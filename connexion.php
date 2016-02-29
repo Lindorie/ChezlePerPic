@@ -50,9 +50,19 @@
 		if($erreur != "") { echo '<div class="info bad">'.$erreur.'</div>'; }
 ?>
 
-<form method="post" action="">
-	<p><label for="identifiant">Identifiant</label><input type="text" id="identifiant" name="identifiant" value="<?php if(isset($identifiant)) echo $identifiant; ?>" /></p>
-	<p><label for="password">Mot de passe</label><input type="password" id="password" name="password" value="<?php if(isset($password)) echo $password; ?>" /></p>
+<form method="post" action="" class="form-horizontal">
+	<div class="form-group">
+		<label for="identifiant" class="col-sm-2 control-label">Identifiant</label>
+		<div class="col-sm-8">
+			<input class="form-control" type="text" id="identifiant" name="identifiant" value="<?php if(isset($identifiant)) echo $identifiant; ?>" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="password" class="control-label col-sm-2">Mot de passe</label>
+		<div class="col-sm-8">
+			<input class="form-control" type="password" id="password" name="password" value="<?php if(isset($password)) echo $password; ?>" />
+		</div>
+	</div>
 	<p><input type="submit" name="submit_connexion" value="Connexion" /></p>
 </form>
 
